@@ -7,7 +7,6 @@ use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\ExchangeRateController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\InventorySourceController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\LocaleController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\RoleController;
-use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\SliderController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\TaxCategoryController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\TaxRateController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Setting\UserController;
@@ -113,19 +112,6 @@ Route::group([
     Route::put('roles/{id}', [RoleController::class, 'update']);
 
     Route::delete('roles/{id}', [RoleController::class, 'destroy']);
-
-    /**
-     * Slider routes.
-     */
-    Route::get('sliders', [SliderController::class, 'allResources']);
-
-    Route::post('sliders', [SliderController::class, 'store']);
-
-    Route::get('sliders/{id}', [SliderController::class, 'getResource']);
-
-    Route::put('sliders/{id}', [SliderController::class, 'update']);
-
-    Route::delete('sliders/{id}', [SliderController::class, 'destroy']);
 
     /**
      * Tax category routes.

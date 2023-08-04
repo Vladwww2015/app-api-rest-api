@@ -63,13 +63,6 @@ class MetaDataController
      *                      example="default"
      *                  ),
      *                  @OA\Property(
-     *                      property="slides",
-     *                      type="integer",
-     *                      description="Enable slider for velocity theme, i.e. `on` is used to `active` or `null` is use to `inactive`",
-     *                      example="on",
-     *                      enum={"on"}
-     *                  ),
-     *                  @OA\Property(
      *                      property="sidebar_category_count",
      *                      type="integer",
      *                      description="Provide side bar category count for front",
@@ -149,7 +142,7 @@ class MetaDataController
      *                          @OA\Property(property="image_2", type="string", example="https://cdn.pixabay.com/photo/2015/06/07/19/42/animal-800760_1280.jpg")
      *                      )
      *                  ),
-     *                  required={"locale", "channel", "slides", "sidebar_category_count", "home_page_content", "footer_left_content", "footer_middle_content"}
+     *                  required={"locale", "channel", "sidebar_category_count", "home_page_content", "footer_left_content", "footer_middle_content"}
      *              )
      *          )
      *      ),

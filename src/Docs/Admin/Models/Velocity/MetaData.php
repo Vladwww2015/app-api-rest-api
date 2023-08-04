@@ -57,18 +57,6 @@ class MetaData
 
     /**
      * @OA\Property(
-     *     title="Slider",
-     *     description="Slider status for velocity theme",
-     *     example=1,
-     *     enum={0,1}
-     * )
-     *
-     * @var integer
-     */
-    private $slider;
-
-    /**
-     * @OA\Property(
      *     title="Advertisement",
      *     description="Velocity theme advertisement",
      *     example={
@@ -179,7 +167,7 @@ class MetaData
      * @var string
      */
     private $subscription_bar_content;
-    
+
     /**
      * @OA\Property(
      *     title="Product View Images",
@@ -190,7 +178,7 @@ class MetaData
      * @var string
      */
     private $product_view_images;
-    
+
     /**
      * @OA\Property(
      *     title="Product Policy",
@@ -201,7 +189,7 @@ class MetaData
      * @var string
      */
     private $product_policy;
-    
+
     /**
      * @OA\Property(
      *     title="Locale",
@@ -235,7 +223,7 @@ class MetaData
      * @var integer
      */
     private $header_content_count;
-    
+
     /**
      * @OA\Property(
      *     title="Created at",

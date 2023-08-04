@@ -79,17 +79,6 @@ class Channel
 
     /**
      * @OA\Property(
-     *     title="Home Page Content",
-     *     description="Channel home page content",
-     *     example="<p>@include('shop::home.slider') @include('shop::home.featured-products') @include('shop::home.new-products')</p>"
-     * )
-     *
-     * @var string
-     */
-    private $home_page_content;
-
-    /**
-     * @OA\Property(
      *     title="Footer Content",
      *     description="Channel footer content",
      *     example="<div class='list-container'><span class='list-heading'>Quick Links</span></div>"
@@ -185,7 +174,7 @@ class Channel
      * @var \Webkul\RestApi\Docs\Admin\Models\Catalog\Category
      */
     private $root_category;
-    
+
     /**
      * @OA\Property(
      *     title="Created at",
