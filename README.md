@@ -1,4 +1,6 @@
-# Bagisto REST API
+# Bagisto REST API Clone Version.
+
+```Compare with Bagisto Rest Api original. Here was removed Shop and Sale features``` 
 
 <p>Bagisto REST API is a medium to use the features of the core Bagisto System. By using Bagisto REST API, you can integrate your application to serve the default content of Bagisto.</p>
 
@@ -11,7 +13,7 @@
 ##### To install Bagisto REST API from your console:
 
 ~~~
-composer require bagisto/rest-api dev-master
+composer require app-api/rest-api dev-main
 ~~~
 
 ##### Add below options in the .env file (i.e. http://localhost/public your domain):
@@ -31,11 +33,4 @@ php artisan bagisto-rest-api:install
 ~~~
 http://localhost/public/api/admin/documentation
 ~~~
-
-#### To check the Shop end API documentation:
-
-~~~
-http://localhost/public/api/shop/documentation
-~~~
-
 * You can check the <a href="https://github.com/DarkaOnLine/L5-Swagger"> L5-Swagger </a> guidelines too regarding the configuration the API documentation.
