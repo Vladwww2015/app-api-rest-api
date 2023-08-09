@@ -47,31 +47,6 @@ namespace Webkul\RestApi\Docs\Admin\Controllers;
  * )
  *
  * @OA\Tag(
- *     name="Orders",
- *     description="API Endpoints of Admin Order"
- * )
- *
- * @OA\Tag(
- *     name="Invoices",
- *     description="API Endpoints of Admin Invoice"
- * )
- *
- * @OA\Tag(
- *     name="Shipments",
- *     description="API Endpoints of Admin Shipment"
- * )
- *
- * @OA\Tag(
- *     name="Refunds",
- *     description="API Endpoints of Admin Refund"
- * )
- *
- * @OA\Tag(
- *     name="Transactions",
- *     description="API Endpoints of Admin Transaction"
- * )
- *
- * @OA\Tag(
  *     name="Locales",
  *     description="API Endpoints of Admin Locale"
  * )
