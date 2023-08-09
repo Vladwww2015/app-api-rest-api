@@ -105,41 +105,6 @@ namespace Webkul\RestApi\Docs\Admin\Controllers;
  *     name="CustomerAddresses",
  *     description="API Endpoints of Admin CustomerAddress"
  * )
- *
- * @OA\Tag(
- *     name="CatalogRules",
- *     description="API Endpoints of Admin CatalogRule"
- * )
- *
- * @OA\Tag(
- *     name="CartRules",
- *     description="API Endpoints of Admin CartRule"
- * )
- *
- * @OA\Tag(
- *     name="CartRuleCoupons",
- *     description="API Endpoints of Admin CartRuleCoupon"
- * )
- *
- * @OA\Tag(
- *     name="EmailTemplates",
- *     description="API Endpoints of Admin EmailTemplate"
- * )
- *
- * @OA\Tag(
- *     name="Events",
- *     description="API Endpoints of Admin Event"
- * )
- *
- * @OA\Tag(
- *     name="Campaigns",
- *     description="API Endpoints of Admin Campaign"
- * )
- *
- * @OA\Tag(
- *     name="Velocity",
- *     description="API Endpoints of Admin Velocity"
- * )
  */
 class Controller
 {
