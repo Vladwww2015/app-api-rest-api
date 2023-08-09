@@ -25,7 +25,7 @@ SANCTUM_STATEFUL_DOMAINS=http://localhost/public
 ##### To configure the REST API L5-Swagger Documentation run below command:
 
 ~~~
-php artisan bagisto-rest-api:install
+php artisan app-api-rest-api:install
 ~~~
 
 #### To check the Admin end API documentation:

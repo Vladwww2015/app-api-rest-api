@@ -11,7 +11,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'bagisto-rest-api:install';
+    protected $signature = 'app-api-rest-api:install';
 
     /**
      * The console command description.
@@ -31,13 +31,13 @@ class Install extends Command
     }
 
     /**
-     * Install and configure bagisto rest api.
+     * Install and configure app-api rest api.
      */
     public function handle()
-    {   
+    {
         // running `php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"`
         $this->warn('Step: Publishing L5Swagger Provider File...');
-        $result = shell_exec('php artisan vendor:publish --tag=bagisto-rest-api-swagger');
+        $result = shell_exec('php artisan vendor:publish --tag=app-api-rest-api-swagger');
         $this->info($result);
 
         $result = shell_exec('php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"');
