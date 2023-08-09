@@ -127,11 +127,6 @@ namespace Webkul\RestApi\Docs\Admin\Controllers;
  * )
  *
  * @OA\Tag(
- *     name="CustomerReviews",
- *     description="API Endpoints of Admin CustomerReview"
- * )
- *
- * @OA\Tag(
  *     name="CustomerAddresses",
  *     description="API Endpoints of Admin CustomerAddress"
  * )

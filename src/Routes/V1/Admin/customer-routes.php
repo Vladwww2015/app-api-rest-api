@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerAddressController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerGroupController;
-use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerReviewController;
 
 Route::group(['middleware' => ['auth:sanctum', 'sanctum.admin']], function () {
     /**
@@ -19,21 +18,6 @@ Route::group(['middleware' => ['auth:sanctum', 'sanctum.admin']], function () {
     Route::put('customers/groups/{id}', [CustomerGroupController::class, 'update']);
 
     Route::delete('customers/groups/{id}', [CustomerGroupController::class, 'destroy']);
-
-    /**
-     * Customer's review routes.
-     */
-    Route::get('customers/reviews', [CustomerReviewController::class, 'allResources']);
-
-    Route::get('customers/reviews/{id}', [CustomerReviewController::class, 'getResource']);
-
-    Route::put('customers/reviews/{id}', [CustomerReviewController::class, 'update']);
-
-    Route::delete('customers/reviews/{id}', [CustomerReviewController::class, 'destroy']);
-
-    Route::post('customers/reviews/mass-destroy', [CustomerReviewController::class, 'massDestroyResources']);
-
-    Route::post('customers/reviews/mass-update', [CustomerReviewController::class, 'massUpdate']);
 
     /**
      * Customer routes.
