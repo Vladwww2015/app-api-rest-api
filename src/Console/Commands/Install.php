@@ -49,6 +49,6 @@ class Install extends Command
 
         // final information
         $this->comment('-----------------------------');
-        $this->comment('Success: Bagisto REST API has been configured successfully.');
+        $this->comment('Success: App REST API has been configured successfully.');
     }
 }

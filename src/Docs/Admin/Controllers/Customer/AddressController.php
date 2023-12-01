@@ -156,7 +156,7 @@ class AddressController
      *                      property="company_name",
      *                      type="string",
      *                      description="Company name",
-     *                      example="Bagisto"
+     *                      example="App REST API"
      *                  ),
      *                  @OA\Property(
      *                      property="vat_id",
@@ -286,7 +286,7 @@ class AddressController
      *                      property="company_name",
      *                      type="string",
      *                      description="Company name",
-     *                      example="Bagisto"
+     *                      example="App REST API"
      *                  ),
      *                  @OA\Property(
      *                      property="vat_id",

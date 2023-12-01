@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'admin' => [
             'api' => [
-                'title' => 'Bagisto Admin Rest API Documentation',
+                'title' => 'Api App Rest Documentation',
             ],
 
             'routes' => [
