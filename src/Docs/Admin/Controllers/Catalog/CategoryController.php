@@ -181,6 +181,18 @@ class CategoryController
      *                      example=1
      *                  ),
      *                  @OA\Property(
+     *                      property="parent_code",
+     *                      description="Category's parent code",
+     *                      type="string",
+     *                      example=1
+     *                  ),
+     *                   @OA\Property(
+     *                      property="code",
+     *                      description="Category's code",
+     *                      type="string",
+     *                      example=1
+     *                  ),
+     *                  @OA\Property(
      *                      property="attributes",
      *                      description="Category's attributes for filter",
      *                      type="array",
@@ -302,6 +314,18 @@ class CategoryController
      *                      property="parent_id",
      *                      description="Category's parent id",
      *                      type="integer",
+     *                      example=1
+     *                  ),
+     *                  @OA\Property(
+     *                      property="parent_code",
+     *                      description="Category's parent code",
+     *                      type="string",
+     *                      example=1
+     *                  ),
+     *                   @OA\Property(
+     *                      property="code",
+     *                      description="Category's code",
+     *                      type="string",
      *                      example=1
      *                  ),
      *                  @OA\Property(

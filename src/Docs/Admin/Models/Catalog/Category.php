@@ -46,6 +46,39 @@ class Category
 
     /**
      * @OA\Property(
+     *     title="Code",
+     *     description="Category's code",
+     *     example="women-apparel"
+     * )
+     *
+     * @var string
+     */
+    private $code;
+
+    /**
+     * @OA\Property(
+     *     title="Parent Code",
+     *     description="Category's Parent Code",
+     *     example="women-apparel"
+     * )
+     *
+     * @var string
+     */
+    private $parent_code;
+
+    /**
+     * @OA\Property(
+     *     title="Parent Id",
+     *     description="Category's Parent Id",
+     *     example="women-apparel"
+     * )
+     *
+     * @var string
+     */
+    private $parent_id;
+
+    /**
+     * @OA\Property(
      *     title="Display Mode",
      *     description="Category's content display mode",
      *     example="products_and_description",
@@ -144,7 +177,7 @@ class Category
      * @var object
      */
     private $additional;
-    
+
     /**
      * @OA\Property(
      *     title="Created at",
