@@ -58,6 +58,14 @@ class CategoryController
      *              type="integer"
      *          )
      *      ),
+     *      @OA\Parameter(
+     *          name="response_columns",
+     *          description="Response Columns, allows you to reduce the size of the response you give. USE a comma to separate them",
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",

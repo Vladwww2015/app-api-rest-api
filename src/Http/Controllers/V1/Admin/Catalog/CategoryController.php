@@ -42,6 +42,7 @@ class CategoryController extends CatalogController
         $request->validate([
             'slug'        => ['required', 'unique:category_translations,slug'],
             'name'        => 'required',
+            'code'        => 'required',
             'image.*'     => 'mimes:bmp,jpeg,jpg,png,webp',
             'description' => 'required_if:display_mode,==,description_only,products_and_description',
         ]);

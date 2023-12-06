@@ -15,28 +15,59 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id'                 => $this->id,
-            'name'               => $this->name,
-            'code'               => $this->code,
-            'parent_code'        => $this->parent_code,
-            'parent_id'        => $this->parent_id,
-            'slug'               => $this->slug,
-            'display_mode'       => $this->display_mode,
-            'description'        => $this->description,
-            'meta_title'         => $this->meta_title,
-            'meta_description'   => $this->meta_description,
-            'meta_keywords'      => $this->meta_keywords,
-            'status'             => $this->status,
-            'image_url'          => $this->image_url,
-            'category_icon_path' => $this->category_icon_path
-                ? Storage::url($this->category_icon_path)
-                : null,
-            'additional'         => is_array($this->resource->additional)
-                ? $this->resource->additional
-                : json_decode($this->resource->additional, true),
-            'created_at'         => $this->created_at,
-            'updated_at'         => $this->updated_at,
-        ];
+        if($columns = $request->input('response_columns')) {
+            $columns = explode(',', $columns);
+            foreach ($columns as $column) {
+                if($column === 'category_icon_path') {
+                    $data[$column] = $this->_getCategoryIconPath();
+                    continue;
+                }
+                if($column === 'additional') {
+                    $data[$column] = $this->_getAdditional();
+                    continue;
+                }
+                $data[$column] = $this->{$column};
+            }
+        } else {
+            $data = [
+                'id'                 => $this->id,
+                'name'               => $this->name,
+                'code'               => $this->code,
+                'parent_code'        => $this->parent_code,
+                'parent_id'        => $this->parent_id,
+                'slug'               => $this->slug,
+                'display_mode'       => $this->display_mode,
+                'description'        => $this->description,
+                'meta_title'         => $this->meta_title,
+                'meta_description'   => $this->meta_description,
+                'meta_keywords'      => $this->meta_keywords,
+                'status'             => $this->status,
+                'image_url'          => $this->image_url,
+                'category_icon_path' => $this->category_icon_path
+                    ? Storage::url($this->category_icon_path)
+                    : null,
+                'additional'         => is_array($this->resource->additional)
+                    ? $this->resource->additional
+                    : json_decode($this->resource->additional, true),
+                'created_at'         => $this->created_at,
+                'updated_at'         => $this->updated_at,
+            ];
+        }
+
+        return $data;
+    }
+
+    protected function _getCategoryIconPath()
+    {
+        return $this->category_icon_path
+            ? Storage::url($this->category_icon_path)
+            : null;
+    }
+
+    protected function _getAdditional()
+    {
+        return is_array($this->resource->additional)
+            ? $this->resource->additional
+            : json_decode($this->resource->additional, true);
     }
 }

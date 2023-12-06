@@ -3,6 +3,7 @@
 namespace Webkul\RestApi\Http\Controllers\V1\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Webkul\Core\Http\Requests\MassDestroyRequest;
 use Webkul\RestApi\Contracts\ResourceContract;
 use Webkul\RestApi\Http\Controllers\V1\V1Controller;
@@ -27,7 +28,7 @@ class ResourceController extends V1Controller implements ResourceContract
      *
      * @var array
      */
-    protected $requestException = ['page', 'limit', 'pagination', 'sort', 'order', 'token'];
+    protected $requestException = ['primary_key', 'page', 'limit', 'pagination', 'sort', 'order', 'token', 'response_columns'];
 
     /**
      * Returns a listing of the resource.
@@ -37,6 +38,16 @@ class ResourceController extends V1Controller implements ResourceContract
      */
     public function allResources(Request $request)
     {
+        if($columns = $request->input('response_columns')) {
+            $columns = explode(',', $columns);
+
+            $columnsFromTable = DB::getSchemaBuilder()->getColumnListing($this->getRepositoryInstance()->getTable());
+
+            $columns = array_filter($columns, fn($column) => in_array($column, $columnsFromTable));
+            $columns[] = $request->input('primary_key', 'id');
+            $columns = array_unique($columns);
+        }
+
         $query = $this->getRepositoryInstance()->scopeQuery(function ($query) use ($request) {
             foreach ($request->except($this->requestException) as $input => $value) {
                 $query = $query->whereIn($input, array_map('trim', explode(',', $value)));
@@ -51,13 +62,17 @@ class ResourceController extends V1Controller implements ResourceContract
             return $query;
         });
 
+        if(!$columns) {
+            $columns = ['*'];
+        }
+
         if (is_null($request->input('pagination')) || $request->input('pagination')) {
-            $results = $query->paginate($request->input('limit') ?? 10);
+            $results = $query->paginate($request->input('limit') ?? 10, $columns);
         } else {
             $results = $query->get();
         }
 
-        return $this->getResourceCollection($results);
+        return $this->getResourceCollection($results, $columns);
     }
 
     /**
