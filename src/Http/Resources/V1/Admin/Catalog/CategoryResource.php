@@ -15,8 +15,13 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
+        $rootCategory = $this->_getRootCategoryId();
+        $rootCategoryId = $rootCategory->id;
         if($columns = $request->input('response_columns')) {
             $columns = explode(',', $columns);
+            $data = [
+                'is_root' => (int) $rootCategoryId === (int) $this->id
+            ];
             foreach ($columns as $column) {
                 if($column === 'category_icon_path') {
                     $data[$column] = $this->_getCategoryIconPath();
@@ -34,7 +39,8 @@ class CategoryResource extends JsonResource
                 'name'               => $this->name,
                 'code'               => $this->code,
                 'parent_code'        => $this->parent_code,
-                'parent_id'        => $this->parent_id,
+                'parent_id'          => $this->parent_id,
+                'is_root' => (int) $rootCategoryId === (int) $this->id,
                 'slug'               => $this->slug,
                 'display_mode'       => $this->display_mode,
                 'description'        => $this->description,
@@ -69,5 +75,10 @@ class CategoryResource extends JsonResource
         return is_array($this->resource->additional)
             ? $this->resource->additional
             : json_decode($this->resource->additional, true);
+    }
+
+    protected function _getRootCategoryId()
+    {
+        return $this->resource->getRootCategory();
     }
 }

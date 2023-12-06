@@ -68,6 +68,16 @@ class Category
 
     /**
      * @OA\Property(
+     *     property="is_root",
+     *      type="boolean",
+     *     description="Is current category root?",
+     *      example="true"
+     * )
+     */
+    private $is_root;
+
+    /**
+     * @OA\Property(
      *     title="Parent Id",
      *     description="Category's Parent Id",
      *     example="women-apparel"

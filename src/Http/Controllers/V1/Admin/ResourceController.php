@@ -45,6 +45,8 @@ class ResourceController extends V1Controller implements ResourceContract
 
             $columns = array_filter($columns, fn($column) => in_array($column, $columnsFromTable));
             $columns[] = $request->input('primary_key', 'id');
+            $columns[] = '_lft';
+            $columns[] = '_rgt';
             $columns = array_unique($columns);
         }
 
