@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Webkul\Core\Http\Requests\MassDestroyRequest;
 use Webkul\RestApi\Contracts\ResourceContract;
 use Webkul\RestApi\Http\Controllers\V1\V1Controller;
+use Webkul\RestApi\Http\PreloadedProductAttributesStorage;
 use Webkul\RestApi\Traits\ProvideResource;
 use Webkul\RestApi\Traits\ProvideUser;
 
@@ -28,7 +29,17 @@ class ResourceController extends V1Controller implements ResourceContract
      *
      * @var array
      */
-    protected $requestException = ['primary_key', 'page', 'limit', 'pagination', 'sort', 'order', 'token', 'response_columns'];
+    protected $requestException = [
+        'primary_key',
+        'page',
+        'limit',
+        'pagination',
+        'sort',
+        'order',
+        'token',
+        'with_attributes',
+        'response_columns'
+    ];
 
     /**
      * Returns a listing of the resource.
@@ -72,6 +83,10 @@ class ResourceController extends V1Controller implements ResourceContract
             $results = $query->paginate($request->input('limit') ?? 10, $columns);
         } else {
             $results = $query->get();
+        }
+
+        if($request->input('with_attributes') == true) {
+            PreloadedProductAttributesStorage::preload($results->items(), $columns);
         }
 
         return $this->getResourceCollection($results, $columns);

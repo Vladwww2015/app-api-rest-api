@@ -23,6 +23,7 @@ class CategoryResource extends JsonResource
                 'is_root' => (int) $rootCategoryId === (int) $this->id
             ];
             foreach ($columns as $column) {
+                if($column === 'is_root') continue;
                 if($column === 'category_icon_path') {
                     $data[$column] = $this->_getCategoryIconPath();
                     continue;
