@@ -43,7 +43,7 @@ class Install extends Command
         $result = shell_exec('php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"');
         $this->info($result);
 
-        $this->warn('Step: Generate l5-swagger docs (Admin & Shop)...');
+        $this->warn('Step: Generate l5-swagger docs...');
         $result = shell_exec('php artisan l5-swagger:generate --all');
         $this->info($result);
 

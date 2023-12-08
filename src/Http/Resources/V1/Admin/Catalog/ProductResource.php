@@ -3,6 +3,8 @@
 namespace Webkul\RestApi\Http\Resources\V1\Admin\Catalog;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+
+use Webkul\RestApi\Http\ProductRequestState;
 use Webkul\RestApi\Http\PreloadedProductAttributesStorage;
 
 class ProductResource extends JsonResource
@@ -15,43 +17,30 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        /**
-         * Not able to use individual key in the resource because
-         * attributes are system defined and custom defined.
-         *
-         * @var array
-         */
-//        $mainAttributes = $this->resource->toArray(); //SO long process
         $data = [];
-        if($columns = $request->input('response_columns')) {
-            $columns = explode(',', $columns);
-            foreach ($columns as $column) {
-                if($column === 'images') {
-                    $data[$column] = ProductImageResource::collection($this->{$column});
-                    continue;
-                }
+        $locale = core()->getRequestedLocaleCode() ?: core()->getDefaultChannelLocaleCode();
 
-                if($column === 'videos') {
-                    $data[$column] = ProductVideoResource::collection($this->{$column});
-                    continue;
-                }
-                $data[$column] = $this->{$column};
-            }
-        } else {
+        $data = [
+            ...$this->getAttributes(),
+            'locale' => $locale
+        ];
+
+        if(ProductRequestState::checkWithAttributes() == true) {
             $data = [
-                $this->merge($this->getAttributes()),
+//                $this->merge($this->resource->toArray()),//SO long process
+                ...PreloadedProductAttributesStorage::getAttributeValues($this->id),
+                ...$this->getAttributes(),
+                'videos' => ProductVideoResource::collection($this->videos),
+                'images' => ProductImageResource::collection($this->images),
+                'locale' => $locale
             ];
         }
 
-        if($request->input('with_attributes') == true) {
-            $data = [
-                $this->merge(PreloadedProductAttributesStorage::getAttributeValues($this->id)),
-                $this->merge($data),
-                $this->merge([
-                    'videos' => ProductVideoResource::collection($this->videos),
-                    'images' => ProductImageResource::collection($this->images)
-                ])
-            ];
+        if($columns = ProductRequestState::getResponseColumns()) {
+            foreach ($data as $column => $value) {
+                if($column === 'id') continue;
+                if(!in_array($column, $columns)) unset($data[$column]);
+            }
         }
 
         return $data;

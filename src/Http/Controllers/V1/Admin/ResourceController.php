@@ -4,10 +4,13 @@ namespace Webkul\RestApi\Http\Controllers\V1\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Http\Requests\MassDestroyRequest;
 use Webkul\RestApi\Contracts\ResourceContract;
 use Webkul\RestApi\Http\Controllers\V1\V1Controller;
 use Webkul\RestApi\Http\PreloadedProductAttributesStorage;
+use Webkul\RestApi\Http\PreloadProductCategories;
+use Webkul\RestApi\Http\ProductRequestState;
 use Webkul\RestApi\Traits\ProvideResource;
 use Webkul\RestApi\Traits\ProvideUser;
 
@@ -49,19 +52,19 @@ class ResourceController extends V1Controller implements ResourceContract
      */
     public function allResources(Request $request)
     {
+        $columnsFromTable = DB::getSchemaBuilder()->getColumnListing($this->getRepositoryInstance()->getTable());
+
+        $primaryColumn = $request->input('primary_key', current($columnsFromTable));
+
         if($columns = $request->input('response_columns')) {
             $columns = explode(',', $columns);
-
-            $columnsFromTable = DB::getSchemaBuilder()->getColumnListing($this->getRepositoryInstance()->getTable());
-
+            ProductRequestState::changeResponseColumns($columns);
             $columns = array_filter($columns, fn($column) => in_array($column, $columnsFromTable));
-            $columns[] = $request->input('primary_key', 'id');
-            $columns[] = '_lft';
-            $columns[] = '_rgt';
+            $columns[] = $primaryColumn;
             $columns = array_unique($columns);
         }
 
-        $query = $this->getRepositoryInstance()->scopeQuery(function ($query) use ($request) {
+        $query = $this->getRepositoryInstance()->scopeQuery(function ($query) use ($request, $primaryColumn) {
             foreach ($request->except($this->requestException) as $input => $value) {
                 $query = $query->whereIn($input, array_map('trim', explode(',', $value)));
             }
@@ -69,7 +72,7 @@ class ResourceController extends V1Controller implements ResourceContract
             if ($sort = $request->input('sort')) {
                 $query = $query->orderBy($sort, $request->input('order') ?? 'desc');
             } else {
-                $query = $query->orderBy('id', 'desc');
+                $query = $query->orderBy($primaryColumn, 'desc');
             }
 
             return $query;
@@ -77,19 +80,37 @@ class ResourceController extends V1Controller implements ResourceContract
 
         if(!$columns) {
             $columns = ['*'];
+        } else {
+            if($this->getRepositoryInstance() instanceof CategoryRepository) {
+                $columns[] = '_lft';
+                $columns[] = '_rgt';
+            }
         }
 
+
         if (is_null($request->input('pagination')) || $request->input('pagination')) {
-            $results = $query->paginate($request->input('limit') ?? 10, $columns);
+            $results = $query->paginate($request->input('limit') ?? 10);
         } else {
             $results = $query->get();
         }
 
         if($request->input('with_attributes') == true) {
-            PreloadedProductAttributesStorage::preload($results->items(), $columns);
+            ProductRequestState::changeWithAttributes(true);
+
+            PreloadedProductAttributesStorage::preload($results->items(), ProductRequestState::getResponseColumns() ?: ['*']);
+        } else {
+            $this->prepareDataByTable($results->items(), $this->getRepositoryInstance()->getTable());
         }
 
         return $this->getResourceCollection($results, $columns);
+    }
+
+    protected function prepareDataByTable(array $results, string $table)
+    {
+        switch ($table) {
+            case 'product_categories':
+                return PreloadProductCategories::preload($results, $table);
+        }
     }
 
     /**
@@ -102,8 +123,11 @@ class ResourceController extends V1Controller implements ResourceContract
     public function getResource(Request $request, int $id)
     {
         $resourceClassName = $this->resource();
+        ProductRequestState::changeWithAttributes(true);
+
 
         $resource = $this->getRepositoryInstance()->findOrFail($id);
+        PreloadedProductAttributesStorage::preload([$resource], ['*']);
 
         return new $resourceClassName($resource);
     }

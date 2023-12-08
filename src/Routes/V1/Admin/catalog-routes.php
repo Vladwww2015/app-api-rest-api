@@ -5,6 +5,7 @@ use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\AttributeController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\AttributeFamilyController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\CategoryController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\ProductController;
+use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\ProductCategoryController;
 
 Route::group([
     'middleware' => ['auth:sanctum', 'sanctum.admin'],
@@ -14,6 +15,8 @@ Route::group([
      * Product routes.
      */
     Route::get('products', [ProductController::class, 'allResources']);
+
+    Route::get('products-categories', [ProductCategoryController::class, 'allResources']);
 
     Route::post('products', [ProductController::class, 'store']);
 
