@@ -68,6 +68,39 @@ class ProductCustomerGroupPrice
      * @var integer
      */
     private $product_id;
+
+    /**
+     * @OA\Property(
+     *     title="Product SKU",
+     *     description="Product's SKU",
+     *     example="t-shirt-men"
+     * )
+     *
+     * @var string
+     */
+    private $product_sku;
+
+    /**
+     * @OA\Property(
+     *     title="Customer Group Code",
+     *     description="Entry belongs to which customer group Code",
+     *     example="Wholesale"
+     * )
+     *
+     * @var integer
+     */
+    private $customer_group_code;
+
+    /**
+     * @OA\Property(
+     *     title="Customer Group Name",
+     *     description="Entry belongs to which customer group Name",
+     *     example="Wholesale"
+     * )
+     *
+     * @var integer
+     */
+    private $customer_group_name;
     
     /**
      * @OA\Property(
@@ -80,6 +113,17 @@ class ProductCustomerGroupPrice
      * @var integer
      */
     private $customer_group_id;
+
+    /**
+     * @OA\Property(
+     *     title="Product Source Code",
+     *     description="QWE",
+     *     example="qwe"
+     * )
+     *
+     * @var string
+     */
+    private $inventory_source_code;
     
     /**
      * @OA\Property(

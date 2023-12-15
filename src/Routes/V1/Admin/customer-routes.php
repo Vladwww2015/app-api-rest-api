@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerAddressController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerGroupController;
+use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomersAddressesController;
 
 Route::group(['middleware' => ['auth:sanctum', 'sanctum.admin']], function () {
     /**
@@ -54,6 +55,7 @@ Route::group(['middleware' => ['auth:sanctum', 'sanctum.admin']], function () {
      * Customer's address routes.
      */
     Route::get('customers/{customer_id}/addresses', [CustomerAddressController::class, 'index']);
+    Route::get('customers-addresses', [CustomersAddressesController::class, 'allResources']);
 
     Route::post('customers/{customer_id}/addresses', [CustomerAddressController::class, 'store']);
 

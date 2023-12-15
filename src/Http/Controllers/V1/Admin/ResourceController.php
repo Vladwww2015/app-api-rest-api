@@ -8,7 +8,10 @@ use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Http\Requests\MassDestroyRequest;
 use Webkul\RestApi\Contracts\ResourceContract;
 use Webkul\RestApi\Http\Controllers\V1\V1Controller;
+use Webkul\RestApi\Http\PreloadCustomerGroup;
+use Webkul\RestApi\Http\PreloadInventorySource;
 use Webkul\RestApi\Http\PreloadedProductAttributesStorage;
+use Webkul\RestApi\Http\PreloadProduct;
 use Webkul\RestApi\Http\PreloadProductCategories;
 use Webkul\RestApi\Http\ProductRequestState;
 use Webkul\RestApi\Traits\ProvideResource;
@@ -109,7 +112,16 @@ class ResourceController extends V1Controller implements ResourceContract
     {
         switch ($table) {
             case 'product_categories':
-                return PreloadProductCategories::preload($results, $table);
+                return PreloadProductCategories::preload($results);
+            case 'product_customer_group_prices':
+                PreloadProduct::preload($results);
+                PreloadInventorySource::preload();
+                PreloadCustomerGroup::preload();
+                return;
+            case 'product_inventories':
+                PreloadProduct::preload($results);
+                PreloadInventorySource::preload();
+                return;
         }
     }
 

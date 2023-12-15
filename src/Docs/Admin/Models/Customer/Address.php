@@ -168,6 +168,39 @@ class Address
 
     /**
      * @OA\Property(
+     *     title="Address Type",
+     *     description="Customer's Address Type (Billing or Shipping)",
+     *     example="billing",
+     * )
+     *
+     * @var string
+     */
+    private $address_type;
+
+    /**
+     * @OA\Property(
+     *     title="email",
+     *     description="Customer's Email",
+     *     example="example@example.com",
+     * )
+     *
+     * @var string
+     */
+    private $email;
+
+    /**
+     * @OA\Property(
+     *     title="Customer Id",
+     *     description="Customer Id",
+     *     example="123",
+     * )
+     *
+     * @var string
+     */
+    private $customer_id;
+
+    /**
+     * @OA\Property(
      *     title="Is Default Address or Not",
      *     description="Customer's Default Address",
      *     enum={"1", "0"}

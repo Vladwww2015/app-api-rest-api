@@ -35,6 +35,17 @@ class Group
 
     /**
      * @OA\Property(
+     *     title="Code",
+     *     description="Customer group code",
+     *     example="Wholesale"
+     * )
+     *
+     * @var string
+     */
+    private $code;
+
+    /**
+     * @OA\Property(
      *     title="Created at",
      *     description="Created at",
      *     example="2020-01-27 17:50:45",
