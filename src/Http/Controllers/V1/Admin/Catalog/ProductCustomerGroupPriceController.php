@@ -17,6 +17,11 @@ class ProductCustomerGroupPriceController extends CatalogController
         return ProductCustomerGroupPriceRepository::class;
     }
 
+    public function getRepositoryInstance()
+    {
+        return app($this->repository());
+    }
+
     /**
      * Resource class name.
      *
@@ -25,5 +30,10 @@ class ProductCustomerGroupPriceController extends CatalogController
     public function resource()
     {
         return ProductCustomerGroupPriceResource::class;
+    }
+
+    public function getCountTotal()
+    {
+        return ['count_total' => $this->getRepositoryInstance()->count()];
     }
 }

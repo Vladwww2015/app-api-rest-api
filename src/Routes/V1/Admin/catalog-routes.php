@@ -19,11 +19,13 @@ Route::group([
     Route::get('products', [ProductController::class, 'allResources']);
 
     Route::get('products-categories', [ProductCategoryController::class, 'allResources']);
-    
+
     Route::get('products-customer-group-prices', [ProductCustomerGroupPriceController::class, 'allResources']);
-    
+
+    Route::get('products-customer-group-price-total', [ProductCustomerGroupPriceController::class, 'getCountTotal']);
+
     Route::get('products-inventories', [ProductsInventoriesController::class, 'allResources']);
-    
+
 
     Route::post('products', [ProductController::class, 'store']);
 
