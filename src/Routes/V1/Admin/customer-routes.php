@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customers\AddressController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customers\CustomerController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Customers\GroupController;
+use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomersAddressesController;
 
 Route::group([
     'middleware' => ['auth:sanctum', 'sanctum.admin'],
@@ -74,4 +75,7 @@ Route::group([
 
         Route::post('mass-destroy', 'massDestroy');
     });
+
+    Route::get('customers-addresses', [CustomersAddressesController::class, 'allResources']);
+
 });
