@@ -128,10 +128,10 @@ class ResourceController extends V1Controller implements ResourceContract
     /**
      * Returns an individual resource.
      *
-     * @param  int  $id
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function getResource(int $id)
+    public function getResource($id)
     {
         $resourceClassName = $this->resource();
         ProductRequestState::changeWithAttributes(true);
