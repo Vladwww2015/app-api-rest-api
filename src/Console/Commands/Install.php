@@ -11,7 +11,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'jrp-engine-rest-api:install';
+    protected $signature = 'api-app-rest-api:install';
 
     /**
      * The console command description.
@@ -26,7 +26,7 @@ class Install extends Command
     public function handle()
     {
         $this->warn('Step: Publishing L5Swagger Provider File...');
-        $result = shell_exec('php artisan vendor:publish --tag=jrp-engine-rest-api-swagger');
+        $result = shell_exec('php artisan vendor:publish --tag=api-app-rest-api-swagger');
         $this->info($result);
 
         $this->warn('Step: Generate l5-swagger docs (Admin)...');
