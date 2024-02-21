@@ -12,6 +12,8 @@ use Webkul\Core\Rules\Slug;
 use Webkul\Product\Helpers\ProductType;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductRepository;
+use Webkul\RestApi\Http\PreloadedProductAttributesStorage;
+use Webkul\RestApi\Http\ProductRequestState;
 use Webkul\RestApi\Http\Resources\V1\Admin\Catalog\ProductResource;
 
 class ProductController extends CatalogController
@@ -34,6 +36,24 @@ class ProductController extends CatalogController
     public function resource()
     {
         return ProductResource::class;
+    }
+
+    /**
+     * Returns an individual resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getResource(int $id)
+    {
+        $resourceClassName = $this->resource();
+        ProductRequestState::changeWithAttributes(true);
+
+
+        $resource = $this->getRepositoryInstance()->findOrFail($id);
+        PreloadedProductAttributesStorage::preload([$resource], ['*']);
+
+        return new $resourceClassName($resource);
     }
 
     /**
