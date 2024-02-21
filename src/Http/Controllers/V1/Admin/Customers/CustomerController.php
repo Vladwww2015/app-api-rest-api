@@ -10,9 +10,6 @@ use Webkul\Core\Rules\PhoneNumber;
 use Webkul\Customer\Repositories\CustomerNoteRepository;
 use Webkul\Customer\Repositories\CustomerRepository;
 use Webkul\RestApi\Http\Resources\V1\Admin\Customer\CustomerResource;
-use Webkul\RestApi\Http\Resources\V1\Admin\Sale\InvoiceResource;
-use Webkul\RestApi\Http\Resources\V1\Admin\Sale\OrderResource;
-use Webkul\Sales\Repositories\InvoiceRepository;
 
 class CustomerController extends BaseController
 {
@@ -22,7 +19,6 @@ class CustomerController extends BaseController
      * @return void
      */
     public function __construct(
-        protected InvoiceRepository $invoiceRepository,
         protected CustomerNoteRepository $customerNoteRepository
     ) {
     }
@@ -138,19 +134,13 @@ class CustomerController extends BaseController
      */
     public function destroy(int $id)
     {
-        $customer = $this->getRepositoryInstance()->findorFail($id);
+        $this->getRepositoryInstance()->findorFail($id);
 
-        if (! $this->getRepositoryInstance()->checkIfCustomerHasOrderPendingOrProcessing($customer)) {
-            $this->getRepositoryInstance()->delete($id);
-
-            return response([
-                'message' => trans('rest-api::app.admin.customers.customers.delete-success'),
-            ]);
-        }
+        $this->getRepositoryInstance()->delete($id);
 
         return response([
-            'message' => trans('rest-api::app.admin.customers.customers.error.order-pending-account-delete'),
-        ], 400);
+            'message' => trans('rest-api::app.admin.customers.customers.delete-success'),
+        ]);
     }
 
     /**
@@ -202,36 +192,6 @@ class CustomerController extends BaseController
         }
 
         return response(['message' => trans('rest-api::app.admin.customers.customers.error.order-pending-account-delete')], 400);
-    }
-
-    /**
-     * Retrieve all orders from customer.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function orders(int $id)
-    {
-        $customer = $this->getRepositoryInstance()->findorFail($id);
-
-        return response([
-            'data' => OrderResource::collection($customer->orders),
-        ]);
-    }
-
-    /**
-     * Retrieve all invoices from customer.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function invoices(int $id)
-    {
-        $customer = $this->getRepositoryInstance()->findorFail($id);
-
-        $orderIds = $customer->orders->pluck('id')->toArray();
-
-        return response([
-            'data' => InvoiceResource::collection($this->invoiceRepository->findWhereIn('order_id', $orderIds)),
-        ]);
     }
 
     /**

@@ -1,12 +1,11 @@
 <?php
 
-namespace Webkul\RestApi\Http\Controllers\V1\Admin\Customer;
+namespace Webkul\RestApi\Http\Controllers\V1\Admin\Customers;
 
 use Webkul\Customer\Repositories\CustomerAddressRepository;
-use Webkul\RestApi\Http\Controllers\V1\Admin\AdminController;
 use Webkul\RestApi\Http\Resources\V1\Admin\Customer\CustomerAddressResource;
 
-class CustomersAddressesController extends AdminController
+class CustomersAddressesController extends BaseController
 {
     /**
      * Repository class name.

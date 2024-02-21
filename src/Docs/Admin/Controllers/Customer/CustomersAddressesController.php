@@ -6,7 +6,7 @@ class CustomersAddressesController
 {
 	/**
 	 * @OA\Get(
-	 *      path="/api/v1/admin/customers-addresses",
+	 *      path="/api/v1/admin/customers/customers-addresses",
 	 *      operationId="getCustomersAddresses",
 	 *      tags={"CustomersAddresses"},
 	 *      summary="Get admin customers addresses list",
