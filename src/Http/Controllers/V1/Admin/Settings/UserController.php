@@ -1,10 +1,11 @@
 <?php
 
-namespace Webkul\RestApi\Http\Controllers\V1\Admin\Setting;
+namespace Webkul\RestApi\Http\Controllers\V1\Admin\Settings;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
+use Webkul\Admin\Http\Requests\UserForm;
 use Webkul\RestApi\Http\Resources\V1\Admin\Setting\UserResource;
-use Webkul\User\Http\Requests\UserForm;
 use Webkul\User\Repositories\AdminRepository;
 
 class UserController extends SettingController
@@ -32,7 +33,6 @@ class UserController extends SettingController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Webkul\User\Http\Requests\UserForm  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(UserForm $request)
@@ -43,18 +43,21 @@ class UserController extends SettingController
             $data['api_token'] = Str::random(80);
         }
 
+        Event::dispatch('user.admin.create.before');
+
         $admin = $this->getRepositoryInstance()->create($data);
+
+        Event::dispatch('user.admin.create.after', $admin);
 
         return response([
             'user'    => new UserResource($admin),
-            'message' => __('rest-api::app.common-response.success.create', ['name' => 'User']),
+            'message' => trans('rest-api::app.admin.settings.users.create-success'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Webkul\User\Http\Requests\UserForm  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -66,11 +69,19 @@ class UserController extends SettingController
             return $data;
         }
 
+        Event::dispatch('user.admin.update.before', $id);
+
         $admin = $this->getRepositoryInstance()->update($data, $id);
+
+        if (! empty($data['password'])) {
+            Event::dispatch('admin.password.update.after', $admin);
+        }
+
+        Event::dispatch('user.admin.update.after', $admin);
 
         return response([
             'user'    => new UserResource($admin),
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'User']),
+            'message' => trans('rest-api::app.admin.settings.users.update-success'),
         ]);
     }
 
@@ -86,21 +97,24 @@ class UserController extends SettingController
 
         if ($this->getRepositoryInstance()->count() == 1) {
             return response([
-                'message' => __('rest-api::app.common-response.error.last-item-delete', ['name' => 'admin']),
+                'message' => trans('rest-api::app.admin.settings.users.error.last-item-delete'),
             ], 400);
         }
 
+        Event::dispatch('user.admin.delete.before', $id);
+
         $this->getRepositoryInstance()->delete($id);
 
+        Event::dispatch('user.admin.delete.after', $id);
+
         return response([
-            'message' => __('rest-api::app.common-response.success.delete', ['name' => 'Admin']),
+            'message' => trans('rest-api::app.admin.settings.users.delete-success'),
         ]);
     }
 
     /**
      * Prepare user data.
      *
-     * @param  \Webkul\User\Http\Requests\UserForm  $request
      * @param  int  $id
      * @return array|\Illuminate\Http\RedirectResponse
      */
@@ -147,13 +161,12 @@ class UserController extends SettingController
     /**
      * Cannot change redirect response.
      *
-     * @param  string $columnName
      * @return \Illuminate\Http\Response
      */
     private function cannotChangeRedirectResponse(string $columnName)
     {
         return response([
-            'message' => __('rest-api::app.common-response.error.cannot-change-column', ['name' => $columnName]),
+            'message' => trans('rest-api::app.admin.settings.users.error.cannot-change-column', ['name' => $columnName]),
         ]);
     }
 }

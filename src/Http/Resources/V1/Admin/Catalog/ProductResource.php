@@ -17,7 +17,6 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        $data = [];
         $locale = core()->getRequestedLocaleCode() ?: core()->getDefaultChannelLocaleCode();
 
         $data = [

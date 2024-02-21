@@ -1,69 +1,77 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerAddressController;
-use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerController;
-use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomerGroupController;
-use Webkul\RestApi\Http\Controllers\V1\Admin\Customer\CustomersAddressesController;
+use Webkul\RestApi\Http\Controllers\V1\Admin\Customers\AddressController;
+use Webkul\RestApi\Http\Controllers\V1\Admin\Customers\CustomerController;
+use Webkul\RestApi\Http\Controllers\V1\Admin\Customers\GroupController;
 
-Route::group(['middleware' => ['auth:sanctum', 'sanctum.admin']], function () {
+Route::group([
+    'middleware' => ['auth:sanctum', 'sanctum.admin'],
+    'prefix'     => 'customers',
+], function () {
     /**
      * Customer's group routes.
      */
-    Route::get('customers/groups', [CustomerGroupController::class, 'allResources']);
+    Route::controller(GroupController::class)->prefix('groups')->group(function () {
+        Route::get('', 'allResources');
 
-    Route::post('customers/groups', [CustomerGroupController::class, 'store']);
+        Route::post('', 'store');
 
-    Route::get('customers/groups/{id}', [CustomerGroupController::class, 'getResource']);
+        Route::get('{id}', 'getResource');
 
-    Route::put('customers/groups/{id}', [CustomerGroupController::class, 'update']);
+        Route::put('{id}', 'update');
 
-    Route::delete('customers/groups/{id}', [CustomerGroupController::class, 'destroy']);
+        Route::delete('{id}', 'destroy');
+    });
 
     /**
      * Customer routes.
      *
      * Note: Main customer routes should be placed after all these routes i.e. `customers/<static-slug>`.
      */
-    Route::get('customers', [CustomerController::class, 'allResources']);
+    Route::controller(CustomerController::class)->group(function () {
+        Route::get('', 'allResources');
 
-    Route::post('customers', [CustomerController::class, 'store']);
+        Route::post('', 'store');
 
-    Route::get('customers/{id}', [CustomerController::class, 'getResource']);
+        Route::get('{id}', 'getResource');
 
-    Route::put('customers/{id}', [CustomerController::class, 'update']);
+        Route::put('{id}', 'update');
 
-    Route::delete('customers/{id}', [CustomerController::class, 'destroy']);
+        Route::delete('{id}', 'destroy');
 
-    Route::post('customers/mass-destroy', [CustomerController::class, 'massDestroy']);
+        Route::post('mass-destroy', 'massDestroy');
 
-    Route::post('customers/mass-update', [CustomerController::class, 'massUpdate']);
+        Route::post('mass-update', 'massUpdate');
 
-    /**
-     * Customer's order routes.
-     */
-    Route::get('customers/{id}/orders', [CustomerController::class, 'orders']);
+        /**
+         * Customer's order routes.
+         */
+        Route::get('{id}/orders', 'orders');
 
-    Route::get('customers/{id}/invoices', [CustomerController::class, 'invoices']);
+        Route::get('{id}/invoices', 'invoices');
 
-    /**
-     * Customer's note routes.
-     */
-    Route::post('customers/{id}/notes', [CustomerController::class, 'storeNote']);
+        /**
+         * Customer's note routes.
+         */
+        Route::post('{id}/notes', 'storeNote');
+
+    });
 
     /**
      * Customer's address routes.
      */
-    Route::get('customers/{customer_id}/addresses', [CustomerAddressController::class, 'index']);
-    Route::get('customers-addresses', [CustomersAddressesController::class, 'allResources']);
+    Route::controller(AddressController::class)->prefix('{customer_id}/addresses')->group(function () {
+        Route::get('', 'index');
 
-    Route::post('customers/{customer_id}/addresses', [CustomerAddressController::class, 'store']);
+        Route::post('', 'store');
 
-    Route::get('customers/{customer_id}/addresses/{id}', [CustomerAddressController::class, 'show']);
+        Route::get('{id}', 'show');
 
-    Route::put('customers/{customer_id}/addresses/{id}', [CustomerAddressController::class, 'update']);
+        Route::put('{id}', 'update');
 
-    Route::delete('customers/{customer_id}/addresses/{id}', [CustomerAddressController::class, 'destroy']);
+        Route::delete('{id}', 'destroy');
 
-    Route::post('customers/{customer_id}/addresses/mass-destroy', [CustomerAddressController::class, 'massDestroy']);
+        Route::post('mass-destroy', 'massDestroy');
+    });
 });

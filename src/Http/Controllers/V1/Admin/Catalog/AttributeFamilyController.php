@@ -2,8 +2,9 @@
 
 namespace Webkul\RestApi\Http\Controllers\V1\Admin\Catalog;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Webkul\Attribute\Repositories\AttributeFamilyRepository;
+use Webkul\Core\Rules\Code;
 use Webkul\RestApi\Http\Resources\V1\Admin\Catalog\AttributeFamilyResource;
 
 class AttributeFamilyController extends CatalogController
@@ -31,73 +32,95 @@ class AttributeFamilyController extends CatalogController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        $request->validate([
-            'code' => ['required', 'unique:attribute_families,code', new \Webkul\Core\Contracts\Validations\Code],
-            'name' => 'required',
+        $this->validate(request(), [
+            'code'                      => ['required', 'unique:attribute_families,code', new Code],
+            'name'                      => 'required',
+            'attribute_groups.*.code'   => 'required',
+            'attribute_groups.*.name'   => 'required',
+            'attribute_groups.*.column' => 'required|in:1,2',
         ]);
 
-        $attributeFamily = $this->getRepositoryInstance()->create($request->all());
+        Event::dispatch('catalog.attribute_family.create.before');
+
+        $attributeFamily = $this->getRepositoryInstance()->create([
+            'attribute_groups'=> request('attribute_groups'),
+            'code'            => request('code'),
+            'name'            => request('name'),
+        ]);
+
+        Event::dispatch('catalog.attribute_family.create.after', $attributeFamily);
 
         return response([
             'data'    => new AttributeFamilyResource($attributeFamily),
-            'message' => __('rest-api::app.common-response.success.create', ['name' => 'Family']),
+            'message' => trans('rest-api::app.admin.catalog.families.create-success'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(int $id)
     {
-        $request->validate([
-            'code' => ['required', 'unique:attribute_families,code,' . $id, new \Webkul\Core\Contracts\Validations\Code],
-            'name' => 'required',
+        $this->validate(request(), [
+            'code'                      => ['required', 'unique:attribute_families,code,'.$id, new Code],
+            'name'                      => 'required',
+            'attribute_groups.*.code'   => 'required',
+            'attribute_groups.*.name'   => 'required',
+            'attribute_groups.*.column' => 'required|in:1,2',
         ]);
 
-        $attributeFamily = $this->getRepositoryInstance()->update($request->all(), $id);
+        $data = request()->only([
+            'attribute_groups',
+            'name',
+        ]);
+
+        Event::dispatch('catalog.attribute_family.update.before', $id);
+
+        $attributeFamily = $this->getRepositoryInstance()->update($data, $id);
+
+        Event::dispatch('catalog.attribute_family.update.after', $attributeFamily);
 
         return response([
             'data'    => new AttributeFamilyResource($attributeFamily),
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'Family']),
+            'message' => trans('rest-api::app.admin.catalog.families.update-success'),
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(int $id)
     {
         $attributeFamily = $this->getRepositoryInstance()->findOrFail($id);
 
         if ($this->getRepositoryInstance()->count() == 1) {
             return response([
-                'message' => __('rest-api::app.common-response.error.last-item-delete', ['name' => 'Family']),
+                'message' => trans('rest-api::app.admin.catalog.families.error.last-item-delete'),
             ], 400);
         }
 
         if ($attributeFamily->products()->count()) {
             return response([
-                'message' => __('rest-api::app.common-response.error.being-used', ['name' => 'Family', 'source' => 'Product']),
+                'message' => trans('rest-api::app.admin.catalog.families.error.being-used'),
             ], 400);
         }
 
+        Event::dispatch('catalog.attribute_family.delete.before', $id);
+
         $this->getRepositoryInstance()->delete($id);
 
+        Event::dispatch('catalog.attribute_family.delete.after', $id);
+
         return response([
-            'message' => __('rest-api::app.common-response.success.delete', ['name' => 'Family']),
+            'message' => trans('rest-api::app.admin.catalog.families.delete-success'),
         ]);
     }
 }

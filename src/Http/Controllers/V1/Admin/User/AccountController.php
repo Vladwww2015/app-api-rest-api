@@ -12,7 +12,6 @@ class AccountController extends UserController
     /**
      * Get the details for current logged in user.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function get(Request $request)
@@ -25,7 +24,6 @@ class AccountController extends UserController
     /**
      * Update the details for current logged in user.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
@@ -36,14 +34,14 @@ class AccountController extends UserController
 
         $data = $request->validate([
             'name'             => 'required',
-            'email'            => 'email|unique:users,email,' . $user->id,
+            'email'            => 'email|unique:users,email,'.$user->id,
             'password'         => 'nullable|min:6|confirmed',
             'current_password' => 'nullable|required|min:6',
         ]);
 
         if (! Hash::check($data['current_password'], $user->password)) {
             return response([
-                'message' => __('rest-api::app.common-response.error.password-mismatch'),
+                'message' => trans('rest-api::app.admin.account.error.password-mismatch'),
             ], 400);
         }
 
@@ -61,7 +59,7 @@ class AccountController extends UserController
 
         return response([
             'data'    => new UserResource($user),
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'Account']),
+            'message' => trans('rest-api::app.admin.account.update-success'),
         ]);
     }
 }

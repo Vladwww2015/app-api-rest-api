@@ -10,8 +10,6 @@ Route::group([
      * Authentication routes.
      */
     require 'auth-routes.php';
-    
-    require 'order-routes.php';
 
     /**
      * Catalog routes.

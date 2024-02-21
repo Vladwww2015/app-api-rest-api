@@ -18,7 +18,7 @@ class Address
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -48,7 +48,7 @@ class Address
      * @OA\Property(
      *     title="Company Name",
      *     description="Customer's Company Name",
-     *     example="App REST API",
+     *     example="Jrp Engine Api-Laravel",
      * )
      *
      * @var string
@@ -74,17 +74,20 @@ class Address
      *     example={
      *          "819, Farnum Road"
      *     },
+     *
      *     @OA\Items(
+     *
      *          @OA\Property(
      *              property="address1",
      *              type="array",
+     *
      *              @OA\Items(
+     *
      *                  @OA\Property(type="string")
      *              )
      *          )
      *     )
      * )
-     *
      */
     private $address1;
 
@@ -151,7 +154,7 @@ class Address
      *     example=21797
      * )
      *
-     * @var integer
+     * @var int
      */
     private $postcode;
 
@@ -168,45 +171,12 @@ class Address
 
     /**
      * @OA\Property(
-     *     title="Address Type",
-     *     description="Customer's Address Type (Billing or Shipping)",
-     *     example="billing",
-     * )
-     *
-     * @var string
-     */
-    private $address_type;
-
-    /**
-     * @OA\Property(
-     *     title="email",
-     *     description="Customer's Email",
-     *     example="example@example.com",
-     * )
-     *
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @OA\Property(
-     *     title="Customer Id",
-     *     description="Customer Id",
-     *     example="123",
-     * )
-     *
-     * @var string
-     */
-    private $customer_id;
-
-    /**
-     * @OA\Property(
      *     title="Is Default Address or Not",
      *     description="Customer's Default Address",
      *     enum={"1", "0"}
      * )
      *
-     * @var boolean
+     * @var bool
      */
     private $is_default;
 

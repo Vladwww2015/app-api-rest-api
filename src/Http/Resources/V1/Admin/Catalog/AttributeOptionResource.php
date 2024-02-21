@@ -17,8 +17,10 @@ class AttributeOptionResource extends JsonResource
         return [
             'id'           => $this->id,
             'admin_name'   => $this->admin_name,
+            'external_admin_name'   => $this->external_admin_name,
             'label'        => $this->label,
             'swatch_value' => $this->swatch_value,
+            'external_swatch_value' => $this->external_swatch_value,
         ];
     }
 }

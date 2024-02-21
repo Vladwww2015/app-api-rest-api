@@ -2,7 +2,8 @@
 
 namespace Webkul\RestApi\Traits;
 
-trait ProvideResource
+trait
+ProvideResource
 {
     /**
      * Is resource authorized.

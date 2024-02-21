@@ -11,7 +11,7 @@ class Install extends Command
      *
      * @var string
      */
-    protected $signature = 'app-api-rest-api:install';
+    protected $signature = 'jrp-engine-rest-api:install';
 
     /**
      * The console command description.
@@ -21,34 +21,19 @@ class Install extends Command
     protected $description = 'Publish L5SwaggerServiceProvider provider, view and config files.';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Install and configure app-api rest api.
+     * Install and configure bagisto rest api.
      */
     public function handle()
     {
-        // running `php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"`
         $this->warn('Step: Publishing L5Swagger Provider File...');
-        $result = shell_exec('php artisan vendor:publish --tag=app-api-rest-api-swagger');
+        $result = shell_exec('php artisan vendor:publish --tag=jrp-engine-rest-api-swagger');
         $this->info($result);
 
-        $result = shell_exec('php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"');
-        $this->info($result);
-
-        $this->warn('Step: Generate l5-swagger docs...');
+        $this->warn('Step: Generate l5-swagger docs (Admin)...');
         $result = shell_exec('php artisan l5-swagger:generate --all');
         $this->info($result);
 
-        // final information
         $this->comment('-----------------------------');
-        $this->comment('Success: App REST API has been configured successfully.');
+        $this->comment('Success: JRP Engine REST API has been configured successfully.');
     }
 }

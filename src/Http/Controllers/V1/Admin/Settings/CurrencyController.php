@@ -1,6 +1,6 @@
 <?php
 
-namespace Webkul\RestApi\Http\Controllers\V1\Admin\Setting;
+namespace Webkul\RestApi\Http\Controllers\V1\Admin\Settings;
 
 use Illuminate\Http\Request;
 use Webkul\Core\Repositories\CurrencyRepository;
@@ -31,7 +31,6 @@ class CurrencyController extends SettingController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,56 +40,63 @@ class CurrencyController extends SettingController
             'name' => 'required',
         ]);
 
-        $currency = $this->getRepositoryInstance()->create($request->all());
+        $currency = $this->getRepositoryInstance()->create(request()->only([
+            'code',
+            'name',
+            'symbol',
+            'decimal',
+        ]));
 
         return response([
             'data'    => new CurrencyResource($currency),
-            'message' => __('rest-api::app.common-response.success.create', ['name' => 'Currency']),
+            'message' => trans('rest-api::app.admin.settings.currencies.create-success'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $request->validate([
-            'code' => ['required', 'unique:currencies,code,' . $id, new \Webkul\Core\Contracts\Validations\Code],
+            'code' => 'required|min:3|max:3|unique:currencies,code',
             'name' => 'required',
         ]);
 
-        $currency = $this->getRepositoryInstance()->update($request->all(), $id);
+        $currency = $this->getRepositoryInstance()->update(request()->only([
+            'code',
+            'name',
+            'symbol',
+            'decimal',
+        ]), $id);
 
         return response([
             'data'    => new CurrencyResource($currency),
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'Currency']),
+            'message' => trans('rest-api::app.admin.settings.currencies.update-success'),
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->getRepositoryInstance()->findOrFail($id);
 
         if ($this->getRepositoryInstance()->count() == 1) {
             return response([
-                'message' => __('rest-api::app.common-response.error.last-item-delete'),
+                'message' => trans('rest-api::app.admin.settings.currencies.error.last-item-delete'),
             ], 400);
         }
 
         $this->getRepositoryInstance()->delete($id);
 
         return response()->json([
-            'message' => __('rest-api::app.common-response.success.delete', ['name' => 'Currency']),
+            'message' => trans('rest-api::app.admin.settings.currencies.delete-success'),
         ]);
     }
 }

@@ -26,13 +26,12 @@ class ConfigurationController extends AdminController
     /**
      * Create a new controller instance.
      *
-     * @param  \Webkul\Core\Repositories\CoreConfigRepository  $coreConfigRepository
      * @return void
      */
     public function __construct(CoreConfigRepository $coreConfigRepository)
     {
         parent::__construct();
-        
+
         $this->coreConfigRepository = $coreConfigRepository;
 
         $this->prepareConfigTree();
@@ -53,7 +52,6 @@ class ConfigurationController extends AdminController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Webkul\Admin\Http\Requests\ConfigurationForm  $request
      * @return \Illuminate\Http\Response
      */
     public function store(ConfigurationForm $request)
@@ -61,7 +59,8 @@ class ConfigurationController extends AdminController
         $this->coreConfigRepository->create($request->except(['_token', 'admin_locale']));
 
         return response([
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'Configuration']),
+
+            'message' => trans('rest-api::app.admin.configuration.update-success'),
         ]);
     }
 

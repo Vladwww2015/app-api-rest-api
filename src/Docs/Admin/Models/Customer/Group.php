@@ -18,7 +18,7 @@ class Group
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -32,17 +32,6 @@ class Group
      * @var string
      */
     private $name;
-
-    /**
-     * @OA\Property(
-     *     title="Code",
-     *     description="Customer group code",
-     *     example="Wholesale"
-     * )
-     *
-     * @var string
-     */
-    private $code;
 
     /**
      * @OA\Property(

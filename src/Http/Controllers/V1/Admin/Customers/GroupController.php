@@ -1,12 +1,14 @@
 <?php
 
-namespace Webkul\RestApi\Http\Controllers\V1\Admin\Customer;
+namespace Webkul\RestApi\Http\Controllers\V1\Admin\Customers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
+use Webkul\Core\Rules\Code;
 use Webkul\Customer\Repositories\CustomerGroupRepository;
 use Webkul\RestApi\Http\Resources\V1\Admin\Customer\CustomerGroupResource;
 
-class CustomerGroupController extends CustomerBaseController
+class GroupController extends BaseController
 {
     /**
      * Repository class name.
@@ -31,49 +33,59 @@ class CustomerGroupController extends CustomerBaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'code' => ['required', 'unique:customer_groups,code', new \Webkul\Core\Contracts\Validations\Code],
+            'code' => ['required', 'unique:customer_groups,code', new Code],
             'name' => 'required',
         ]);
 
-        $data = $request->all();
+        Event::dispatch('customer.customer_group.create.before');
 
-        $data['is_user_defined'] = 1;
+        $customerGroup = $this->getRepositoryInstance()->create(request()->only([
+            'code',
+            'name',
+        ]), [
+            'is_user_defined' => 1,
+        ]);
 
-        $customerGroup = $this->getRepositoryInstance()->create($data);
+        Event::dispatch('customer.customer_group.create.after', $customerGroup);
 
         return response([
             'data'    => new CustomerGroupResource($customerGroup),
-            'message' => __('rest-api::app.common-response.success.create', ['name' => 'Customer group']),
+            'message' => trans('rest-api::app.admin.customers.groups.create-success'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'code' => ['required', 'unique:customer_groups,code,' . $id, new \Webkul\Core\Contracts\Validations\Code],
+            'code' => ['required', 'unique:customer_groups,code,'.$id, new Code],
             'name' => 'required',
         ]);
 
         $this->getRepositoryInstance()->findOrFail($id);
 
-        $customerGroup = $this->getRepositoryInstance()->update($request->all(), $id);
+        Event::dispatch('customer.customer_group.update.before', $id);
+
+        $customerGroup = $this->getRepositoryInstance()->update(request()->only([
+            'code',
+            'name',
+        ]), $id);
+
+        Event::dispatch('customer.customer_group.update.after', $customerGroup);
 
         return response([
             'data'    => new CustomerGroupResource($customerGroup),
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'Customer group']),
+            'message' => trans('rest-api::app.admin.customers.groups.update-success'),
         ]);
     }
 
@@ -89,20 +101,24 @@ class CustomerGroupController extends CustomerBaseController
 
         if ($customerGroup->is_user_defined == 0) {
             return response([
-                'message' => __('rest-api::app.common-response.error.default-group-delete'),
+                'message' => trans('rest-api::app.admin.customers.groups.error.default-group-delete'),
             ], 400);
         }
 
         if (count($customerGroup->customers) > 0) {
             return response([
-                'message' => __('rest-api::app.common-response.error.being-used', ['name' => 'Customer group', 'source' => 'customer']),
+                'message' => trans('rest-api::app.admin.customers.groups.error.being-used'),
             ], 400);
         }
 
+        Event::dispatch('customer.customer_group.delete.before', $id);
+
         $this->getRepositoryInstance()->delete($id);
 
+        Event::dispatch('customer.customer_group.delete.after', $id);
+
         return response([
-            'message' => __('rest-api::app.common-response.success.delete', ['name' => 'Customer group']),
+            'message' => trans('rest-api::app.admin.customers.groups.delete-success'),
         ]);
     }
 }

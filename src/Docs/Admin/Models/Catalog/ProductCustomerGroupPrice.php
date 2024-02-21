@@ -18,7 +18,7 @@ class ProductCustomerGroupPrice
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -30,7 +30,7 @@ class ProductCustomerGroupPrice
      *     example=150
      * )
      *
-     * @var integer
+     * @var int
      */
     private $qty;
 
@@ -56,7 +56,7 @@ class ProductCustomerGroupPrice
      * @var float
      */
     private $value;
-    
+
     /**
      * @OA\Property(
      *     title="Product ID",
@@ -65,43 +65,10 @@ class ProductCustomerGroupPrice
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $product_id;
 
-    /**
-     * @OA\Property(
-     *     title="Product SKU",
-     *     description="Product's SKU",
-     *     example="t-shirt-men"
-     * )
-     *
-     * @var string
-     */
-    private $product_sku;
-
-    /**
-     * @OA\Property(
-     *     title="Customer Group Code",
-     *     description="Entry belongs to which customer group Code",
-     *     example="Wholesale"
-     * )
-     *
-     * @var integer
-     */
-    private $customer_group_code;
-
-    /**
-     * @OA\Property(
-     *     title="Customer Group Name",
-     *     description="Entry belongs to which customer group Name",
-     *     example="Wholesale"
-     * )
-     *
-     * @var integer
-     */
-    private $customer_group_name;
-    
     /**
      * @OA\Property(
      *     title="Customer Group ID",
@@ -110,21 +77,10 @@ class ProductCustomerGroupPrice
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $customer_group_id;
 
-    /**
-     * @OA\Property(
-     *     title="Product Source Code",
-     *     description="QWE",
-     *     example="qwe"
-     * )
-     *
-     * @var string
-     */
-    private $inventory_source_code;
-    
     /**
      * @OA\Property(
      *     title="Created at",

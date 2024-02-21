@@ -18,7 +18,7 @@ class Category
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -43,49 +43,6 @@ class Category
      * @var string
      */
     private $slug;
-
-    /**
-     * @OA\Property(
-     *     title="Code",
-     *     description="Category's code",
-     *     example="women-apparel"
-     * )
-     *
-     * @var string
-     */
-    private $code;
-
-    /**
-     * @OA\Property(
-     *     title="Parent Code",
-     *     description="Category's Parent Code",
-     *     example="women-apparel"
-     * )
-     *
-     * @var string
-     */
-    private $parent_code;
-
-    /**
-     * @OA\Property(
-     *     property="is_root",
-     *      type="boolean",
-     *     description="Is current category root?",
-     *      example="true"
-     * )
-     */
-    private $is_root;
-
-    /**
-     * @OA\Property(
-     *     title="Parent Id",
-     *     description="Category's Parent Id",
-     *     example="women-apparel"
-     * )
-     *
-     * @var string
-     */
-    private $parent_id;
 
     /**
      * @OA\Property(
@@ -151,7 +108,7 @@ class Category
      *     enum={0, 1}
      * )
      *
-     * @var integer
+     * @var int
      */
     private $status;
 

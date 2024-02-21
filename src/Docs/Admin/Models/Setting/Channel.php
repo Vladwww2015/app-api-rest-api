@@ -18,7 +18,7 @@ class Channel
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -66,82 +66,17 @@ class Channel
      */
     private $timezone;
 
-    /**
-     * @OA\Property(
-     *     title="Theme",
-     *     description="Channel theme code",
-     *     example="velocity"
-     * )
-     *
-     * @var string
-     */
-    private $theme;
-
-    /**
-     * @OA\Property(
-     *     title="Footer Content",
-     *     description="Channel footer content",
-     *     example="<div class='list-container'><span class='list-heading'>Quick Links</span></div>"
-     * )
-     *
-     * @var string
-     */
-    private $footer_content;
 
     /**
      * @OA\Property(
      *     title="Hostname",
      *     description="Channel host name, website URL",
-     *     example="https://demo.test.com/"
+     *     example="https://demo.bagisto.com/"
      * )
      *
      * @var string
      */
     private $hostname;
-
-    /**
-     * @OA\Property(
-     *     title="Logo",
-     *     description="Channel logo, website's logo",
-     *     example="channel/{channel_id}/{logo_name.jpg}"
-     * )
-     *
-     * @var string
-     */
-    private $logo;
-
-    /**
-     * @OA\Property(
-     *     title="Logo URL",
-     *     description="Channel logo URL, website's logo URL",
-     *     example="http://localhost/private/storage/channel/{channel_id}/{logo_name.jpg}"
-     * )
-     *
-     * @var string
-     */
-    private $logo_url;
-
-    /**
-     * @OA\Property(
-     *     title="Favicon",
-     *     description="Channel favicon, website's favicon",
-     *     example="channel/{channel_id}/{favicon_name.jpg}"
-     * )
-     *
-     * @var string
-     */
-    private $favicon;
-
-    /**
-     * @OA\Property(
-     *     title="Favicon URL",
-     *     description="Channel favicon URL, website's favicon URL",
-     *     example="http://localhost/private/storage/channel/{channel_id}/{favicon_name.jpg}"
-     * )
-     *
-     * @var string
-     */
-    private $favicon_url;
 
     /**
      * @OA\Property(
@@ -161,7 +96,7 @@ class Channel
      *     example=1
      * )
      *
-     * @var integer
+     * @var int
      */
     private $root_category_id;
 

@@ -1,8 +1,9 @@
 <?php
 
-namespace Webkul\RestApi\Http\Controllers\V1\Admin\Setting;
+namespace Webkul\RestApi\Http\Controllers\V1\Admin\Settings;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Webkul\Core\Repositories\ExchangeRateRepository;
 use Webkul\RestApi\Http\Resources\V1\Admin\Setting\ExchangeRateResource;
 
@@ -31,7 +32,6 @@ class ExchangeRateController extends SettingController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,33 +41,45 @@ class ExchangeRateController extends SettingController
             'rate'            => 'required|numeric',
         ]);
 
-        $exchangeRate = $this->getRepositoryInstance()->create($request->all());
+        Event::dispatch('core.exchange_rate.create.before');
+
+        $exchangeRate = $this->getRepositoryInstance()->create(request()->only([
+            'target_currency',
+            'rate',
+        ]));
+
+        Event::dispatch('core.exchange_rate.create.after', $exchangeRate);
 
         return response([
             'data'    => new ExchangeRateResource($exchangeRate),
-            'message' => __('rest-api::app.common-response.success.create', ['name' => 'Exchange rate']),
+            'message' => trans('rest-api::app.admin.settings.exchange-rates.create-success'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $request->validate([
-            'target_currency' => ['required', 'unique:currency_exchange_rates,target_currency,' . $id],
+            'target_currency' => ['required', 'unique:currency_exchange_rates,target_currency,'.$id],
             'rate'            => 'required|numeric',
         ]);
 
-        $exchangeRate = $this->getRepositoryInstance()->update($request->all(), $id);
+        Event::dispatch('core.exchange_rate.update.before', $id);
+
+        $exchangeRate = $this->getRepositoryInstance()->create(request()->only([
+            'target_currency',
+            'rate',
+        ]), $id);
+
+        Event::dispatch('core.exchange_rate.update.after', $exchangeRate);
 
         return response([
             'data'    => new ExchangeRateResource($exchangeRate),
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'Exchange rate']),
+            'message' => trans('rest-api::app.admin.settings.exchange-rates.update-success'),
         ]);
     }
 
@@ -79,10 +91,10 @@ class ExchangeRateController extends SettingController
     public function updateRates()
     {
         try {
-            app(config('services.exchange-api.' . config('services.exchange-api.default') . '.class'))->updateRates();
+            app(config('services.exchange-api.'.config('services.exchange-api.default').'.class'))->updateRates();
 
             return response([
-                'message' => __('rest-api::app.common-response.success.update', ['name' => 'Rate']),
+                'message' => trans('rest-api::app.admin.settings.tax-rates.update-success'),
             ]);
         } catch (\Exception $e) {
             return response([
@@ -94,17 +106,20 @@ class ExchangeRateController extends SettingController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $this->getRepositoryInstance()->findOrFail($id);
 
+        Event::dispatch('core.exchange_rate.delete.before', $id);
+
         $this->getRepositoryInstance()->delete($id);
 
+        Event::dispatch('core.exchange_rate.delete.after', $id);
+
         return response([
-            'message' => __('rest-api::app.common-response.success.delete', ['name' => 'Exchange rate']),
+            'message' => trans('rest-api::app.admin.settings.exchange-rates.delete-success'),
         ]);
     }
 }

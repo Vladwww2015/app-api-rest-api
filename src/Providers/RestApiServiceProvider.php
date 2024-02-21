@@ -28,11 +28,11 @@ class RestApiServiceProvider extends ServiceProvider
     {
         $this->activateMiddlewareAliases();
 
-        $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'rest-api');
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'rest-api');
 
         $this->publishes([
             __DIR__.'/../Config/l5-swagger.php' => config_path('l5-swagger.php'),
-        ], ['app-api-rest-api-swagger']);
+        ], 'engine-api-rest-api-swagger');
     }
 
     /**
@@ -68,7 +68,7 @@ class RestApiServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
             ->middleware('api')
-            ->group(__DIR__ . '/../Routes/api.php');
+            ->group(__DIR__.'/../Routes/api.php');
     }
 
     /**

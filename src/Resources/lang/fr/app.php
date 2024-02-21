@@ -1,127 +1,212 @@
 <?php
 
 return [
-    'sales' => [
-        'orders' => [
-            'cancel-error' => 'La commande ne peut pas être annulée.',
-        ],
+    'admin' => [
 
-        'invoices' => [
-            'invalid-qty-error' => 'Nous avons trouvé une quantité invalide pour facturer les articles.',
-            'creation-error'    => 'La création de facture de commande n\'est pas autorisée.',
-            'product-error'     => 'La facture ne peut pas être créée sans produits.',
-        ],
+        'catalog' => [
+            'products' => [
+                'create-success' => 'Produit ajouté avec succès.',
+                'delete-success' => 'Produit supprimé avec succès',
+                'update-success' => 'Produit mis à jour avec succès.',
 
-        'shipments' => [
-            'invalid-qty-error' => 'Nous avons trouvé une quantité invalide pour les articles d\'expédition.',
-            'creation-error'    => 'L\'envoi ne peut pas être créé pour cette commande.',
-        ],
+                'inventories' => [
+                    'update-success' => 'Inventaire mis à jour avec succès.',
+                ],
 
-        'refunds' => [
-            'creation-error'       => 'Le remboursement ne peut pas être créé pour cette commande.',
-            'invalid-amount-error' => 'Le montant du remboursement doit être différent de zéro.',
-            'invalid-qty-error'    => 'Nous avons trouvé une quantité invalide pour les articles remboursés.',
-            'limit-error'          => 'Le plus d\'argent disponible à rembourser est :amount.',
-        ],
+                'mass-operations' => [
+                    'delete-success'  => 'Produits sélectionnés supprimés avec succès.',
+                    'update-success'  => 'Produits sélectionnés mis à jour avec succès.',
+                ],
 
-        'transactions' => [
-            'already-paid'      => 'Cette facture a déjà été payée.',
-            'invoice-missing'   => 'Cet identifiant de facture n\'existe pas.',
-            'transaction-saved' => 'La transaction a été enregistrée.',
-            'transaction-amount-exceeds' => 'Le montant spécifié de cette transaction dépasse le montant total de la facture.',
-        ],
-    ],
-
-    'catalog' => [
-        'products' => [
-            'configurable-error' => 'Veuillez sélectionner au moins un attribut configurable.',
-        ],
-    ],
-
-    'customers' => [
-        'note-cannot-taken' => 'La note ne peut pas être prise.',
-        'note-taken'        => 'Note prise.',
-        'address-deleted'   => 'Adresse supprimée avec succès.',
-    ],
-
-    'wishlist' => [
-        'moved'          => 'Article déplacé avec succès vers le panier.',
-        'option-missing' => 'Les options du produit sont manquantes, l\'article ne peut donc pas être déplacé vers la liste de souhaits.',
-    ],
-
-    'checkout' => [
-        'cart' => [
-            'item' => [
-                'error-add'      => 'L\'article ne peut pas être ajouté au panier, veuillez réessayer plus tard.',
-                'error-remove'   => 'Aucun article à retirer du panier.',
-                'inactive'       => 'Un article est inactif et a été supprimé du panier.',
-                'inactive-add'   => 'L\'article inactif ne peut pas être ajouté au panier.',
-                'success'        => 'L\'article a été ajouté au panier avec succès.',
-                'success-remove' => 'L\'article a été supprimé avec succès du panier.',
+                'error' => [
+                    'configurable-error' => 'Veuillez sélectionner au moins un attribut configurable.',
+                ],
             ],
 
-            'quantity' => [
-                'error'             => 'Impossible de mettre à jour le ou les éléments pour le moment, veuillez réessayer plus tard.',
-                'illegal'           => 'La quantité ne peut pas être inférieure à un.',
-                'inventory-warning' => 'La quantité demandée n\'est pas disponible, veuillez réessayer plus tard.',
-                'success'           => 'Article(s) du panier mis à jour avec succès.',
-                'quantity'          => 'Quantité',
+            'categories' => [
+                'create-success' => 'Catégorie ajoutée avec succès.',
+                'delete-success' => 'Catégorie supprimée avec succès',
+                'update-success' => 'Catégorie mise à jour avec succès.',
+
+                'mass-operations' => [
+                    'delete-success'  => 'Catégories sélectionnées supprimées avec succès.',
+                    'update-success'  => 'Catégories sélectionnées mises à jour avec succès.',
+                ],
             ],
 
-            'coupon' => [
-                'apply-issue'    => 'Le code promo ne peut pas être appliqué.',
-                'invalid'        => 'Le code promo n\'est pas valide.',
-                'success'        => 'Code promo appliqué avec succès.',
-                'success-remove' => 'Coupon supprimé avec succès.',
+            'attributes' => [
+                'create-success' => 'Attribut ajouté avec succès.',
+                'delete-success' => 'Attribut supprimé avec succès',
+                'update-success' => 'Attribut mis à jour avec succès.',
+
+                'error' => [
+                    'system-attributes-delete' => 'Impossible de supprimer les attributs système.',
+                    'cannot-change-type'       => 'Impossible de modifier le champ de type',
+
+                    'mass-operations' => [
+                        'resource-not-found' => 'Attributs sélectionnés non trouvés.',
+                    ],
+                ],
             ],
 
-            'move-wishlist' => [
-                'error'   => 'Impossible de déplacer l\'élément vers la liste de souhaits, veuillez réessayer plus tard.',
-                'success' => 'L\'article a été déplacé vers la liste de souhaits avec succès.',
+            'families'   => [
+                'create-success' => 'Famille ajoutée avec succès.',
+                'delete-success' => 'Famille supprimée avec succès',
+                'update-success' => 'Famille mise à jour avec succès.',
+
+                'error' => [
+                    'last-item-delete' => 'Au moins une famille est requise.',
+                    'being-used'       => 'Cette famille de ressources est utilisée dans :source.',
+                ],
             ],
         ],
 
-        'minimum-order-message'   => 'Le montant minimum de commande est de :amount.',
-        'check-shipping-address'  => 'Veuillez vérifier l\'adresse de livraison.',
-        'check-billing-address'   => 'Veuillez vérifier l\'adresse de facturation.',
-        'specify-shipping-method' => 'Veuillez spécifier le mode d\'expédition.',
-        'specify-payment-method'  => 'Veuillez préciser le mode de paiement.',
-    ],
+        'customers' => [
+            'customers' => [
+                'create-success' => 'Client ajouté avec succès.',
+                'delete-success' => 'Client supprimé avec succès',
+                'update-success' => 'Client mis à jour avec succès.',
 
-    'common-response' => [
-        'success' => [
-            'add'    => ':name ajouté avec succès.',
-            'cancel' => ':name annulé avec succès.',
-            'create' => ':name créé avec succès.',
-            'delete' => ':name supprimé avec succès.',
-            'update' => ':name mis à jour avec succès.',
-            'upload' => ':name uploaded with success.',
+                'mass-operations' => [
+                    'delete-success' => 'Clients sélectionnés supprimés avec succès.',
+                    'update-success' => 'Clients sélectionnés mis à jour avec succès.',
+                ],
 
-            'mass-operations' => [
-                'delete'  => 'Sélectionné :name supprimé avec succès.',
-                'partial' => 'Certaines actions n\'ont pas été effectuées en raison de contraintes système restreintes sur :name.',
-                'update'  => 'Sélectionné :name mis à jour avec succès.',
+                'error' => [
+                    'order-pending-account-delete' => 'Impossible de supprimer le compte des clients car certaines commandes sont en attente ou dans l\'état de traitement.',
+                ],
+
+                'notes' => [
+                    'note-taken' => 'Note prise.',
+                ],
             ],
+
+            'addresses' => [
+                'create-success' => 'Adresse ajoutée avec succès.',
+                'delete-success' => 'Adresse supprimée avec succès',
+                'update-success' => 'Adresse mise à jour avec succès.',
+
+                'mass-operations' => [
+                    'delete-success' => 'Adresses sélectionnées supprimées avec succès.',
+                ],
+            ],
+
+            'groups' => [
+                'create-success' => 'Groupe de clients ajouté avec succès.',
+                'delete-success' => 'Groupe de clients supprimé avec succès',
+                'update-success' => 'Groupe de clients mis à jour avec succès.',
+
+                'error' => [
+                    'being-used'           => 'Cette ressource de groupes est utilisée chez les clients.',
+                    'default-group-delete' => 'Impossible de supprimer le groupe par défaut.',
+                ],
+            ],
+
         ],
 
-        'error' => [
-            'already-taken'                => 'Le :name a déjà été pris.',
-            'base-currency-delete'         => 'Cette devise est définie comme devise de base du canal, elle ne peut donc pas être supprimée.',
-            'being-used'                   => 'Cette ressource :name est utilisée dans :source.',
-            'cannot-change-column'         => 'Impossible de changer le :name.',
-            'default-group-delete'         => 'Impossible de supprimer le groupe par défaut.',
-            'delete-failed'                => 'Erreur rencontrée lors de la suppression de :name.',
-            'last-item-delete'             => 'Au moins un :name est requis.',
-            'not-authorized'               => 'Pas autorisé',
-            'order-pending-account-delete' => 'Impossible de supprimer :name account car certaines commandes sont en attente ou en cours de traitement.',
-            'password-mismatch'            => 'Le mot de passe actuel ne correspond pas.',
-            'root-category-delete'         => 'Impossible de supprimer la catégorie racine.',
-            'security-warning'             => 'Activité suspecte détectée !',
-            'something-went-wrong'         => 'Quelque chose s\'est mal passé !',
-            'system-attribute-delete'      => 'Impossible de supprimer l\'attribut système.',
 
-            'mass-operations' => [
-                'resource-not-found' => 'Sélectionné :name introuvable.',
+        'settings' => [
+            'locales' => [
+                'create-success' => 'Locale ajoutée avec succès.',
+                'delete-success' => 'Locale supprimée avec succès',
+                'update-success' => 'Locale mise à jour avec succès.',
+
+                'error' => [
+                    'last-item-delete' => 'Au moins une localisation est requise.',
+                ],
+            ],
+
+            'currencies' => [
+                'create-success' => 'Devise ajoutée avec succès.',
+                'delete-success' => 'Devise supprimée avec succès',
+                'update-success' => 'Devise mise à jour avec succès.',
+
+                'error' => [
+                    'last-item-delete' => 'Au moins une devise est requise.',
+                ],
+            ],
+
+            'exchange-rates' => [
+                'create-success' => 'Taux de change ajouté avec succès.',
+                'delete-success' => 'Taux de change supprimé avec succès',
+                'update-success' => 'Taux de change mis à jour avec succès.',
+            ],
+
+            'inventory-sources' => [
+                'create-success'   => 'Source d\'inventaire ajoutée avec succès.',
+                'delete-success'   => 'Source d\'inventaire supprimée avec succès',
+                'update-success'   => 'Source d\'inventaire mise à jour avec succès.',
+
+                'error' => [
+                    'last-item-delete' => 'Au moins une source d\'inventaire est requise.',
+                ],
+            ],
+
+            'taxes' => [
+                'tax-rates' => [
+                    'create-success' => 'Taux de taxe ajouté avec succès.',
+                    'delete-success' => 'Taux de taxe supprimé avec succès',
+                    'update-success' => 'Taux de taxe mis à jour avec succès.',
+                ],
+
+                'tax-categories' => [
+                    'create-success' => 'Catégorie de taxe ajoutée avec succès.',
+                    'delete-success' => 'Catégorie de taxe supprimée avec succès',
+                    'update-success' => 'Catégorie de taxe mise à jour avec succès.',
+                ],
+            ],
+
+            'channels' => [
+                'create-success' => 'Canal ajouté avec succès.',
+                'delete-success' => 'Canal supprimé avec succès',
+                'update-success' => 'Canal mis à jour avec succès.',
+
+                'error' => [
+                    'last-item-delete' => 'Au moins un canal est requis.',
+                ],
+            ],
+
+            'users' => [
+                'create-success' => 'Utilisateur ajouté avec succès.',
+                'delete-success' => 'Utilisateur supprimé avec succès',
+                'update-success' => 'Utilisateur mis à jour avec succès.',
+
+                'error' => [
+                    'cannot-change-column' => 'Impossible de modifier les utilisateurs.',
+                    'last-item-delete'     => 'Au moins un utilisateur est requis.',
+                ],
+            ],
+
+            'roles' => [
+                'create-success' => 'Rôle ajouté avec succès.',
+                'delete-success' => 'Rôle supprimé avec succès',
+                'update-success' => 'Rôle mis à jour avec succès.',
+
+                'error' => [
+                    'being-used'       => 'Cette ressource de rôles est utilisée chez l\'utilisateur administrateur.',
+                    'last-item-delete' => 'Au moins un rôle est requis.',
+                ],
+            ],
+
+        ],
+
+        'configuration' => [
+            'create-success' => 'Configuration ajoutée avec succès.',
+            'delete-success' => 'Configuration supprimée avec succès',
+            'update-success' => 'Configuration mise à jour avec succès.',
+        ],
+
+        'account' => [
+            'create-success'     => 'Compte ajouté avec succès.',
+            'delete-success'     => 'Compte supprimé avec succès',
+            'logged-in-success'  => 'Connecté avec succès.',
+            'logged-out-success' => 'Déconnecté avec succès.',
+            'update-success'     => 'Compte mis à jour avec succès.',
+
+            'error' => [
+                'credential-error'  => 'Les informations d\'identification fournies sont incorrectes.',
+                'invalid'           => 'E-mail ou mot de passe invalide',
+                'password-mismatch' => 'Le mot de passe actuel ne correspond pas.',
             ],
         ],
     ],

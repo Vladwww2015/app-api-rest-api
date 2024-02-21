@@ -1,8 +1,9 @@
 <?php
 
-namespace Webkul\RestApi\Http\Controllers\V1\Admin\Setting;
+namespace Webkul\RestApi\Http\Controllers\V1\Admin\Settings;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Webkul\RestApi\Http\Resources\V1\Admin\Setting\RoleResource;
 use Webkul\User\Repositories\AdminRepository;
 use Webkul\User\Repositories\RoleRepository;
@@ -32,29 +33,31 @@ class RoleController extends SettingController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
             'name'            => 'required',
-            'permission_type' => 'required',
+            'permission_type' => ['required', 'in:all,custom'],
+            'description'     => 'required',
         ]);
+
+        Event::dispatch('user.role.create.before');
 
         $role = $this->getRepositoryInstance()->create($request->all());
 
+        Event::dispatch('user.role.create.after', $role);
+
         return response([
             'data'    => new RoleResource($role),
-            'message' => __('rest-api::app.common-response.success.create', ['name' => 'Role']),
+            'message' => trans('rest-api::app.admin.settings.roles.create-success'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Webkul\User\Repositories\AdminRepository  $adminRepository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -62,7 +65,8 @@ class RoleController extends SettingController
     {
         $request->validate([
             'name'            => 'required',
-            'permission_type' => 'required',
+            'permission_type' => ['required', 'in:all,custom'],
+            'description'     => 'required',
         ]);
 
         $params = $request->all();
@@ -74,15 +78,19 @@ class RoleController extends SettingController
 
         if ($isChangedFromAll && $adminRepository->countAdminsWithAllAccess() === 1) {
             return response([
-                'message' => __('rest-api::app.common-response.error.being-used', ['name' => 'role', 'source' => 'admin user']),
+                'message' => trans('rest-api::app.admin.settings.roles.error.being-used'),
             ], 400);
         }
 
+        Event::dispatch('user.role.update.before', $id);
+
         $role = $this->getRepositoryInstance()->update($params, $id);
+
+        Event::dispatch('user.role.update.after', $role);
 
         return response([
             'data'    => new RoleResource($role),
-            'message' => __('rest-api::app.common-response.success.update', ['name' => 'Role']),
+            'message' => trans('rest-api::app.admin.settings.roles.update-success'),
         ]);
     }
 
@@ -98,20 +106,25 @@ class RoleController extends SettingController
 
         if ($role->admins->count() >= 1) {
             return response([
-                'message' => __('rest-api::app.common-response.error.being-used', ['name' => 'role', 'source' => 'admin user']),
+                'message' => trans('rest-api::app.admin.settings.roles.error.being-used'),
             ], 400);
         }
 
         if ($this->getRepositoryInstance()->count() == 1) {
             return response([
-                'message' => __('rest-api::app.common-response.error.last-item-delete', ['name' => 'role']),
+                'message' => trans('rest-api::app.admin.settings.roles.error.last-item-delete'),
             ], 400);
         }
 
+        Event::dispatch('user.role.delete.before', $id);
+
         $this->getRepositoryInstance()->delete($id);
 
+        Event::dispatch('user.role.delete.after', $id);
+
         return response([
-            'message' => __('rest-api::app.common-response.success.delete', ['name' => 'Role']),
+            'message' => trans('rest-api::app.admin.settings.roles.delete-success'),
+
         ]);
     }
 }

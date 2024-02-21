@@ -1,19 +1,19 @@
 <?php
 
 return [
-    'default' => 'default',
+    'default'        => 'default',
     'documentations' => [
         'admin' => [
             'api' => [
-                'title' => 'Api App Rest Documentation',
+                'title' => 'JRP Engine Admin Rest API Documentation',
             ],
 
             'routes' => [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'api/admin/documentation',
-                'docs' => storage_path('api-docs/admin'),
+                'api'             => 'api/admin/documentation',
+                'docs'            => storage_path('api-docs/admin'),
                 'oauth2_callback' => 'api/admin/oauth2-callback',
             ],
             'paths' => [
@@ -41,7 +41,7 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                 */
                 'annotations' => [
-                    base_path('vendor/app-api/rest-api/src/Docs/Admin'),
+                    base_path('vendor/engine-api/rest-api/src/Docs/Admin'),
                 ],
 
             ],
@@ -63,9 +63,9 @@ return [
              * Middleware allows to prevent unexpected access to API documentation
             */
             'middleware' => [
-                'api' => [],
-                'asset' => [],
-                'docs' => [],
+                'api'             => [],
+                'asset'           => [],
+                'docs'            => [],
                 'oauth2_callback' => [],
             ],
 
@@ -195,16 +195,16 @@ return [
                 ],
                 */
                 'sanctum_admin' => [ // Unique name of security
-                    'type' => 'apiKey', // Valid values are "basic", "apiKey" or "oauth2".
+                    'type'        => 'apiKey', // Valid values are "basic", "apiKey" or "oauth2".
                     'description' => 'Enter token in format (Bearer <token>)',
-                    'name' => 'Authorization', // The name of the header or query parameter to be used.
-                    'in' => 'header', // The location of the API key. Valid values are "query" or "header".
+                    'name'        => 'Authorization', // The name of the header or query parameter to be used.
+                    'in'          => 'header', // The location of the API key. Valid values are "query" or "header".
                 ],
                 'sanctum' => [ // Unique name of security
-                    'type' => 'apiKey', // Valid values are "basic", "apiKey" or "oauth2".
+                    'type'        => 'apiKey', // Valid values are "basic", "apiKey" or "oauth2".
                     'description' => 'Enter token in format (Bearer <token>)',
-                    'name' => 'Authorization', // The name of the header or query parameter to be used.
-                    'in' => 'header', // The location of the API key. Valid values are "query" or "header".
+                    'name'        => 'Authorization', // The name of the header or query parameter to be used.
+                    'in'          => 'header', // The location of the API key. Valid values are "query" or "header".
                 ],
             ],
             'security' => [
