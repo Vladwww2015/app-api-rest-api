@@ -12,6 +12,11 @@ Route::group([
     require 'auth-routes.php';
 
     /**
+     * Order routes
+     */
+    require 'order-routes.php';
+
+    /**
      * Catalog routes.
      */
     require 'catalog-routes.php';
