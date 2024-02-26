@@ -4,10 +4,10 @@ namespace Webkul\RestApi\Http\Controllers\V1\Admin\Order;
 
 use Illuminate\Http\Request;
 
-use Webkul\RestApi\Http\Controllers\V1\Admin\AdminController;
 use Webkul\RestApi\Model\CreateOrderInBv;
-use Webkul\RestApi\Model\GetBvIntegrationSourceTypes;
 use Webkul\RestApi\Model\GetOrderIdsByExternalIds;
+use Webkul\RestApi\Model\GetBvIntegrationSourceTypes;
+use Webkul\RestApi\Http\Controllers\V1\Admin\AdminController;
 
 class OrderController extends AdminController
 {
