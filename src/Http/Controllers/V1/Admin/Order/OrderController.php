@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 
 use Webkul\RestApi\Http\Controllers\V1\Admin\AdminController;
 use Webkul\RestApi\Model\CreateOrderInBv;
+use Webkul\RestApi\Model\GetBvIntegrationSourceTypes;
 use Webkul\RestApi\Model\GetOrderIdsByExternalIds;
 
 class OrderController extends AdminController
 {
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function createOrder(Request $request)
     {
         try {
@@ -25,6 +30,10 @@ class OrderController extends AdminController
         }
     }
 
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function getOrderIdsByExternalIds(Request $request)
     {
         $request->validate([
@@ -35,5 +44,14 @@ class OrderController extends AdminController
         $orderIds = $request->input('order_ids', []);
 
         return GetOrderIdsByExternalIds::get($orderIds, $request->get('source_type'));
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getBvIntegrationSourceTypes(Request $request)
+    {
+        return GetBvIntegrationSourceTypes::get();
     }
 }
