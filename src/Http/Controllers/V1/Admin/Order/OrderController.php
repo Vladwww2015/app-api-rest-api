@@ -8,6 +8,7 @@ use Webkul\RestApi\Model\CreateOrderInBv;
 use Webkul\RestApi\Model\GetOrderIdsByExternalIds;
 use Webkul\RestApi\Model\GetBvIntegrationSourceTypes;
 use Webkul\RestApi\Http\Controllers\V1\Admin\AdminController;
+use Webkul\RestApi\Model\GetOrdersFullData;
 
 class OrderController extends AdminController
 {
@@ -41,9 +42,28 @@ class OrderController extends AdminController
             'source_type' => 'required'
         ]);
 
-        $orderIds = $request->input('order_ids', []);
+        $orderIds = $request->input('order_ids');
+        if(!is_array($orderIds)) {
+            $orderIds = explode(',', $orderIds);
+        }
 
-        return GetOrderIdsByExternalIds::get($orderIds, $request->get('source_type'));
+        return ['data' => GetOrderIdsByExternalIds::get($orderIds, $request->get('source_type'))];
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getOrdersFullData(Request $request)
+    {
+        $request->validate([
+            'order_ids' => 'required',
+            'source_type' => 'required'
+        ]);
+
+        $orderIds = $request->input('order_ids');
+
+        return ['data' => GetOrdersFullData::get($orderIds, $request->get('source_type'))];
     }
 
     /**
