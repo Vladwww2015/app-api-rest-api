@@ -57,13 +57,13 @@ class OrderController extends AdminController
     public function getOrdersFullData(Request $request)
     {
         $request->validate([
-            'order_ids' => 'required',
+            'order_map_ids' => 'required',
             'source_type' => 'required'
         ]);
 
-        $orderIds = $request->input('order_ids');
+        $orderIdsMap = $request->get('order_map_ids');
 
-        return ['data' => GetOrdersFullData::get($orderIds, $request->get('source_type'))];
+        return ['data' => GetOrdersFullData::get($orderIdsMap, $request->get('source_type'))];
     }
 
     /**
