@@ -30,9 +30,9 @@ class CreateOrderInBv
     /**
      * @param array $data
      * @param string $sourceType
-     * @return int
+     * @return string
      */
-    public static function create(array $data, string $sourceType): int
+    public static function create(array $data, string $sourceType): string
     {
         return static::$bvOrderCreator[$sourceType]::create($data, $sourceType);
     }
