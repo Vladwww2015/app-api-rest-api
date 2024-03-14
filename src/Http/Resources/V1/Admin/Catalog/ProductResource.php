@@ -23,19 +23,25 @@ class ProductResource extends JsonResource
             ...$this->getAttributes(),
             'locale' => $locale
         ];
-
+        $columns = ProductRequestState::getResponseColumns();
         if(ProductRequestState::checkWithAttributes() == true) {
             $data = [
 //                $this->merge($this->resource->toArray()),//SO long process
                 ...PreloadedProductAttributesStorage::getAttributeValues($this->id),
                 ...$this->getAttributes(),
-                'videos' => ProductVideoResource::collection($this->videos),
-                'images' => ProductImageResource::collection($this->images),
                 'locale' => $locale
             ];
+
+            if(!$columns || in_array('images', $columns)) {
+                $data['images'] = ProductImageResource::collection($this->images);
+            }
+
+            if(!$columns || in_array('videos', $columns)) {
+                $data['videos'] = ProductVideoResource::collection($this->videos);
+            }
         }
 
-        if($columns = ProductRequestState::getResponseColumns()) {
+        if($columns) {
             foreach ($data as $column => $value) {
                 if($column === 'id') continue;
                 if(!in_array($column, $columns)) unset($data[$column]);
