@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Http\Requests\MassDestroyRequest;
+use Webkul\Product\Repositories\ProductRepository;
 use Webkul\RestApi\Contracts\ResourceContract;
 use Webkul\RestApi\Http\Controllers\V1\V1Controller;
 use Webkul\RestApi\Http\PreloadCustomerGroup;
@@ -90,6 +91,7 @@ class ResourceController extends V1Controller implements ResourceContract
             }
         }
 
+        static::prepareByRepositoryType($query);
 
         if (is_null($request->input('pagination')) || $request->input('pagination')) {
             $results = $query->paginate($request->input('limit') ?? 10);
@@ -106,6 +108,17 @@ class ResourceController extends V1Controller implements ResourceContract
         }
 
         return $this->getResourceCollection($results, $columns);
+    }
+
+    /**
+     * @param $query
+     * @return void
+     */
+    protected function prepareByRepositoryType($query)
+    {
+        if($query instanceof ProductRepository) {
+            $query->where('ready_to_api', '=', 1);
+        }
     }
 
     protected function prepareDataByTable(array $results, string $table)
