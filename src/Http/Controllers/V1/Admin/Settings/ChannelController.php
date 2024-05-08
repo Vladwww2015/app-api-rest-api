@@ -59,11 +59,6 @@ class ChannelController extends SettingController
             'logo.*'            => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
             'favicon.*'         => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
 
-            /* seo */
-            'seo_title'       => 'required|string',
-            'seo_description' => 'required|string',
-            'seo_keywords'    => 'required|string',
-
             /* maintenance mode */
             'is_maintenance_on'     => 'boolean',
             'maintenance_mode_text' => 'nullable',
@@ -116,18 +111,11 @@ class ChannelController extends SettingController
             'logo.*'                       => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
             'favicon.*'                    => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
 
-            /* seo */
-            $locale.'.seo_title'       => 'nullable',
-            $locale.'.seo_description' => 'nullable',
-            $locale.'.seo_keywords'    => 'nullable',
-
             /* maintenance mode */
             'is_maintenance_on'                => 'boolean',
             $locale.'.maintenance_mode_text'   => 'nullable',
             'allowed_ips'                      => 'nullable',
         ]);
-
-        $data = $this->setSEOContent($data, $locale);
 
         Event::dispatch('core.channel.update.before', $id);
 
@@ -170,49 +158,5 @@ class ChannelController extends SettingController
         return response([
             'message' => trans('rest-api::app.admin.settings.channels.delete-success'),
         ]);
-    }
-
-    /**
-     * Set the seo content and return back the updated array.
-     *
-     * @param  string  $locale
-     * @return array
-     */
-    private function setSEOContent(array $data, $locale = null)
-    {
-        $editedData = $data;
-
-        if ($locale) {
-            $editedData = $data[$locale];
-        }
-
-        $editedData['home_seo']['meta_title'] = $editedData['seo_title'];
-        $editedData['home_seo']['meta_description'] = $editedData['seo_description'];
-        $editedData['home_seo']['meta_keywords'] = $editedData['seo_keywords'];
-        $editedData['home_seo'] = json_encode($editedData['home_seo']);
-
-        $editedData = $this->unsetKeys($editedData, ['seo_title', 'seo_description', 'seo_keywords']);
-
-        if ($locale) {
-            $data[$locale] = $editedData;
-            $editedData = $data;
-        }
-
-        return $editedData;
-    }
-
-    /**
-     * Unset keys.
-     *
-     * @param  array  $keys
-     * @return array
-     */
-    private function unsetKeys($data, $keys)
-    {
-        foreach ($keys as $key) {
-            unset($data[$key]);
-        }
-
-        return $data;
     }
 }
