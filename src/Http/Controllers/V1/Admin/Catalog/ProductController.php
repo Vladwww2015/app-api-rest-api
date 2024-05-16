@@ -49,7 +49,6 @@ class ProductController extends CatalogController
         $resourceClassName = $this->resource();
         ProductRequestState::changeWithAttributes(true);
 
-
         $resource = $this->getRepositoryInstance()->findOrFail($id);
         PreloadedProductAttributesStorage::preload([$resource], ['*']);
 

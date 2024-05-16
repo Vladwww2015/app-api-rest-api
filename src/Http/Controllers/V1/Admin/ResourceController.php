@@ -91,7 +91,7 @@ class ResourceController extends V1Controller implements ResourceContract
             }
         }
 
-        static::prepareByRepositoryType($query);
+        static::prepareByRepositoryType($request, $query);
 
         if (is_null($request->input('pagination')) || $request->input('pagination')) {
             $results = $query->paginate($request->input('limit') ?? 10);
@@ -114,10 +114,12 @@ class ResourceController extends V1Controller implements ResourceContract
      * @param $query
      * @return void
      */
-    protected function prepareByRepositoryType($query)
+    protected function prepareByRepositoryType(Request $request, $repository)
     {
-        if($query instanceof ProductRepository) {
-            $query->where('ready_to_api', '=', 1);
+        if($repository instanceof ProductRepository) {
+            if($request->get('ready_to_api_flag')) {
+                $repository->findByReadyToApiStatus($request->get('ready_to_api_flag'));
+            }
         }
     }
 
