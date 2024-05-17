@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Http\Requests\MassDestroyRequest;
+use Webkul\Product\IsReadyForApiConstraintInterface;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\RestApi\Contracts\ResourceContract;
 use Webkul\RestApi\Http\Controllers\V1\V1Controller;
@@ -117,8 +118,8 @@ class ResourceController extends V1Controller implements ResourceContract
     protected function prepareByRepositoryType(Request $request, $repository)
     {
         if($repository instanceof ProductRepository) {
-            if($request->get('ready_to_api_flag')) {
-                $repository->findByReadyToApiStatus($request->get('ready_to_api_flag'));
+            if($request->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE)) {
+                $repository->findByReadyToApiStatus($request->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE));
             }
         }
     }
