@@ -13,9 +13,9 @@ class GetProductReadyToApiFlags
      * @param string $flag
      * @return void
      */
-    public static function add(string $flag)
+    public static function add(string $flag, string $label)
     {
-        static::$flags[$flag] = $flag;
+        static::$flags[$flag] = $label;
     }
 
     /**
