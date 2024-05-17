@@ -8,6 +8,7 @@ use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\ProductController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\ProductCategoryController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\ProductCustomerGroupPriceController;
 use Webkul\RestApi\Http\Controllers\V1\Admin\Catalog\ProductsInventoriesController;
+use Webkul\RestApi\Http\Controllers\V1\Admin\Product\ReadyToApiController;
 
 Route::group([
     'middleware' => ['auth:sanctum', 'sanctum.admin'],
@@ -92,4 +93,13 @@ Route::group([
 
         Route::delete('{id}', 'destroy');
     });
+});
+
+Route::group([
+    'middleware' => ['auth:sanctum', 'sanctum.admin'],
+    'prefix'     => 'product-ready-to-api',
+], function () {
+
+    Route::get('get-flags', [ReadyToApiController::class, 'getFlags']);
+
 });
