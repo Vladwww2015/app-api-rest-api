@@ -26,11 +26,11 @@ class PreloadedProductAttributesStorage
             $productTableAttributes = DB::getSchemaBuilder()->getColumnListing($table);
 
             foreach (DB::table(static::getProductAttributeTable(), 'pr_at_val')
-                ->join('attributes', function ($join) {
-                    $join->on('attributes.id', '=', 'pr_at_val.attribute_id');
-                })
-                ->groupBy('pr_at_val.attribute_id', 'attributes.code')
-                ->get(['code']) as $attributeData) {
+                         ->join('attributes', function ($join) {
+                             $join->on('attributes.id', '=', 'pr_at_val.attribute_id');
+                         })
+                         ->groupBy('pr_at_val.attribute_id', 'attributes.code')
+                         ->get(['code']) as $attributeData) {
                 $productAttributes[] = $attributeData->code;
             }
 
@@ -206,8 +206,8 @@ class PreloadedProductAttributesStorage
         foreach (DB::table(static::getAttributeOptionTable(), 'attr_option')
                      ->whereIn('attribute_id', array_keys($attributeIds))
                      ->join('attribute_option_translations', function($join) use($locale) {
-                            $join->on('attr_option.id', '=', 'attribute_option_translations.attribute_option_id')
-                                    ->on('attribute_option_translations.locale', '=', DB::raw(DB::escape($locale)));
+                         $join->on('attr_option.id', '=', 'attribute_option_translations.attribute_option_id')
+                             ->on('attribute_option_translations.locale', '=', DB::raw(DB::escape($locale)));
                      })
                      ->get([
                          'attribute_option_translations.locale',
@@ -218,29 +218,22 @@ class PreloadedProductAttributesStorage
                          'attr_option.swatch_value',
                      ]) as $option
         ) {
-            static::$attributesOptionsMapper['options'][$attributeIds[$option->attribute_id]['code']][$option->id] = $option;
+            static::$attributesOptionsMapper['options'][$attributeIds[$option->attribute_id]['code']][$option->id] = $option->label;
         }
 
-        if($locale != $defaultLocale) {
-            foreach (DB::table(static::getAttributeOptionTable(), 'attr_option')
-                         ->whereIn('attribute_id', array_keys($attributeIds))
-                         ->join('attribute_option_translations', function($join) use ($defaultLocale) {
-                             $join->on('attr_option.id', '=', 'attribute_option_translations.attribute_option_id')
-                                 ->on('attribute_option_translations.locale', '=', DB::raw(DB::escape($defaultLocale)));
 
-                         })
-                         ->get([
-                             'attribute_option_translations.locale',
-                             'attribute_option_translations.label',
-                             'attr_option.id',
-                             'attr_option.attribute_id',
-                             'attr_option.admin_name',
-                             'attr_option.swatch_value',
-                         ]) as $option
-            ) {
-                static::$attributesOptionsMapper['optionsDefault'][$attributeIds[$option->attribute_id]['code']][$option->id] = $option;
-            }
+        foreach (DB::table(static::getAttributeOptionTable(), 'attr_option')
+                     ->whereIn('attribute_id', array_keys($attributeIds))
+                     ->get([
+                         'attr_option.id',
+                         'attr_option.attribute_id',
+                         'attr_option.admin_name',
+                         'attr_option.swatch_value',
+                     ]) as $option
+        ) {
+            static::$attributesOptionsMapper['optionsDefault'][$attributeIds[$option->attribute_id]['code']][$option->id] = $option->admin_name;
         }
+
     }
 
     protected static function getProductAttributeTable()
