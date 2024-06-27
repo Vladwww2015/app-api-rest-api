@@ -28,6 +28,8 @@ Route::group([
     Route::controller(ProductController::class)->prefix('products')->group(function () {
         Route::get('', 'allResources');
 
+        Route::get('get-count-total', 'getCountTotal');
+
         Route::post('', 'store');
 
         Route::get('{id}', 'getResource');

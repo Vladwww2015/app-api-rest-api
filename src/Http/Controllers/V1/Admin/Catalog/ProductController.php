@@ -10,6 +10,7 @@ use Webkul\Admin\Http\Requests\MassUpdateRequest;
 use Webkul\Admin\Http\Requests\ProductForm;
 use Webkul\Core\Rules\Slug;
 use Webkul\Product\Helpers\ProductType;
+use Webkul\Product\IsReadyForApiConstraintInterface;
 use Webkul\Product\Repositories\ProductInventoryRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\RestApi\Http\PreloadedProductAttributesStorage;
@@ -223,5 +224,15 @@ class ProductController extends CatalogController
         return response([
             'message' => trans('rest-api::app.admin.catalog.products.mass-operations.update-success'),
         ]);
+    }
+
+    public function getCountTotal()
+    {
+        $count = $this->getRepositoryInstance()
+            ->findByReadyToApiStatus(
+                request()->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE)
+            )->count();
+
+        return ['count_total' => $count];
     }
 }
