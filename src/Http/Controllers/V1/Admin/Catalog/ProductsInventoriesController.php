@@ -28,4 +28,14 @@ class ProductsInventoriesController extends AdminController
     {
         return ProductsInventoriesResource::class;
     }
+
+    /**
+     * @return array
+     */
+    public function getInventoriesCountTotal()
+    {
+        $count = $this->getRepositoryInstance()->count();
+
+        return ['count_total' => $count];
+    }
 }

@@ -21,6 +21,7 @@ Route::group([
 
     Route::get('products-customer-group-price-total', [ProductCustomerGroupPriceController::class, 'getCountTotal']);
     Route::get('products-inventories', [ProductsInventoriesController::class, 'allResources']);
+    Route::get('inventories-count-total', [ProductsInventoriesController::class, 'getInventoriesCountTotal']);
 
     /**
      * Product routes.
