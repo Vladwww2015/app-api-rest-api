@@ -18,7 +18,7 @@ class ProductImageResource extends JsonResource
             'id'                 => $this->id,
             'type'               => $this->type,
             'path'               => $this->path,
-            'is_main'            => (bool) $this->is_main,
+            'image_role'         => $this->image_role,
             'url'                => $this->url,
             'original_image_url' => url($this->url),
             'small_image_url'    => url('cache/small/'.$this->path),
