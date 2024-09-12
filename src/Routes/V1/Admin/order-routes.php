@@ -15,5 +15,6 @@ Route::group(
 
     Route::get('get-bv-integration-source-types', [OrderController::class, 'getBvIntegrationSourceTypes']);
 
+
     Route::post('get-orders-full-data', [OrderController::class, 'getOrdersFullData']);
 });
