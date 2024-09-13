@@ -80,6 +80,10 @@ class AddressController extends BaseController
             $results = $query->get();
         }
 
+        foreach ($results as $result) {
+            $result->setCustomer($customer);
+        }
+
         return $this->getResourceCollection($results);
     }
 

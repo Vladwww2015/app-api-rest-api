@@ -16,6 +16,7 @@ class CustomerAddressResource extends JsonResource
     {
         return [
             'id'           => $this->id,
+            'customer_code'   => $this->getCustomer()->number_external,
             'first_name'   => $this->first_name,
             'last_name'    => $this->last_name,
             'company_name' => $this->company_name,
