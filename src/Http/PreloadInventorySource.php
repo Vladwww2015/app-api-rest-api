@@ -4,7 +4,6 @@ namespace Webkul\RestApi\Http;
 
 use Illuminate\Support\Facades\DB;
 use Webkul\Inventory\Models\InventorySource;
-use Webkul\Product\Models\ProductCustomerGroupPrice;
 
 class PreloadInventorySource
 {

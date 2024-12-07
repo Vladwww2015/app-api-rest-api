@@ -8,19 +8,20 @@ use Webkul\Product\Models\Product;
 class PreloadProduct
 {
     protected static $productMap = [];
-    
-    public static function preload(array $items)
-    {
-        $productIds = array_map(fn($item) => $item['product_id'], $items);
 
-        static::preloadProductSkuMap($productIds);
+    public static function preload(array $items = null, array $productIds = [])
+    {
+        $productIds = $productIds ?: array_map(fn($item) => $item['product_id'], $items);
+
+        if($productIds) static::preloadProductSkuMap($productIds);
+
     }
-    
+
     public static function getSkuByProductId(int $productId)
     {
         return static::$productMap[$productId] ?? '';
     }
-    
+
     protected static function preloadProductSkuMap(array $productIds)
     {
         foreach (
