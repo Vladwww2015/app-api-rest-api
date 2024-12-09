@@ -8,15 +8,15 @@ use Webkul\Category\Models\Category;
 class PreloadProductCategories extends PreloadProduct
 {
     protected static $categoryMap = [];
-    
-    public static function preload(array $items)
+
+    public static function preload(array $items = null, array $productIds = [])
     {
-        parent::preload($items);
+        parent::preload($items, $productIds);
         $categoryIds = array_map(fn($item) => $item['category_id'], $items);
 
         static::preloadCategoryCodeMap($categoryIds);
     }
-    
+
     public static function getCodeByCategoryId(int $categoryId)
     {
         return static::$categoryMap[$categoryId] ?? '';
