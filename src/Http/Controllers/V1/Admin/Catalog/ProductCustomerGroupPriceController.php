@@ -2,6 +2,7 @@
 
 namespace Webkul\RestApi\Http\Controllers\V1\Admin\Catalog;
 
+use Webkul\Product\Models\ProductCustomerGroupPrice;
 use Webkul\Product\Repositories\ProductCustomerGroupPriceRepository;
 use Webkul\RestApi\Http\Resources\V1\Admin\Catalog\ProductCustomerGroupPriceResource;
 
@@ -34,6 +35,16 @@ class ProductCustomerGroupPriceController extends CatalogController
 
     public function getCountTotal()
     {
-        return ['count_total' => $this->getRepositoryInstance()->count()];
+        if(core()->getProductSourceGroupPriceAlgorithm() === 'all') {
+            return ['count_total' => $this->getRepositoryInstance()->count()];
+        }
+
+        /**
+         * @var $model ProductCustomerGroupPrice
+         */
+        $model = $this->getRepositoryInstance()->getModel();
+        $query = $model->query()->groupBy('product_id');
+
+        return ['count_total' => $query->count()];
     }
 }

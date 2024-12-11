@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Core\Http\Requests\MassDestroyRequest;
 use Webkul\Product\IsReadyForApiConstraintInterface;
+use Webkul\Product\Repositories\ProductCustomerGroupPriceRepository;
 use Webkul\Product\Repositories\ProductRepository;
 use Webkul\RestApi\Contracts\ResourceContract;
 use Webkul\RestApi\Http\Controllers\V1\V1Controller;
@@ -120,6 +121,14 @@ class ResourceController extends V1Controller implements ResourceContract
         if($repository instanceof ProductRepository) {
             if($request->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE)) {
                 $repository->findByReadyToApiStatus($request->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE));
+            }
+        }
+
+        if($repository instanceof ProductCustomerGroupPriceRepository) {
+            if(core()->getProductSourceGroupPriceAlgorithm() === 'one') {
+                $repository->scopeQuery(function ($query) {
+                    $query->groupBy('product_id');
+                });
             }
         }
     }
