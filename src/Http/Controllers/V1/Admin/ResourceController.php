@@ -127,7 +127,7 @@ class ResourceController extends V1Controller implements ResourceContract
         if($repository instanceof ProductCustomerGroupPriceRepository) {
             if(core()->getProductSourceGroupPriceAlgorithm() === 'one') {
                 $repository->scopeQuery(function ($query) {
-                    $query->groupBy('product_id');
+                    $query->groupBy('product_id', 'customer_group_id');
                 });
             }
         }

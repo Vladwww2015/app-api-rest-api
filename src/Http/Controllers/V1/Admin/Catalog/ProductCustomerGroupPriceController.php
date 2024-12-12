@@ -43,7 +43,7 @@ class ProductCustomerGroupPriceController extends CatalogController
          * @var $model ProductCustomerGroupPrice
          */
         $model = $this->getRepositoryInstance()->getModel();
-        $query = $model->query()->groupBy('product_id');
+        $query = $model->query()->groupBy('product_id', 'customer_group_id');
 
         return ['count_total' => $query->count()];
     }
