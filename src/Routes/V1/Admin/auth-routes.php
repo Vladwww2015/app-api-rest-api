@@ -6,6 +6,7 @@ use Webkul\RestApi\Http\Controllers\V1\Admin\User\AuthController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
+    Route::post('check-login-and-get-token', 'checkLoginAndGetToken');
 
     Route::post('forgot-password', 'forgotPassword');
 });

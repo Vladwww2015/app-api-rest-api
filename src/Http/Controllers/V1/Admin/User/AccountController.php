@@ -3,9 +3,13 @@
 namespace Webkul\RestApi\Http\Controllers\V1\Admin\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Webkul\RestApi\Http\Resources\V1\Admin\Setting\UserResource;
+use Webkul\User\Repositories\AdminRepository;
 
 class AccountController extends UserController
 {

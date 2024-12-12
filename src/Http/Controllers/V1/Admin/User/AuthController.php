@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Webkul\RestApi\Http\Resources\V1\Admin\Setting\UserResource;
+use Webkul\User\Models\Admin;
 use Webkul\User\Repositories\AdminRepository;
 
 class AuthController extends UserController
@@ -65,6 +66,55 @@ class AuthController extends UserController
             'message' => trans('rest-api::app.admin.account.error.invalid'),
         ], 401);
     }
+
+    public function checkLoginAndGetToken(Request $request, AdminRepository $adminRepository)
+    {
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (! EnsureFrontendRequestsAreStateful::fromFrontend($request)) {
+            $request->validate([
+                'device_name' => 'required',
+            ]);
+
+            $admin = $adminRepository->where('email', $request->email)->first();
+
+            if (!$admin || !Hash::check($request->password, $admin->password)) {
+                throw ValidationException::withMessages([
+                    'email' => trans('rest-api::app.admin.account.error.credential-error'),
+                ]);
+            }
+            /**
+             * @var $admin Admin
+             */
+            /**
+             * Preventing multiple token creation.
+             */
+            $token = $admin->tokens->first();
+
+            return response([
+                'data' => new UserResource($admin),
+                'message' => trans('rest-api::app.admin.account.logged-in-success'),
+                'token' => $token ?: $admin->createToken($request->device_name, ['role:admin'])->plainTextToken,
+            ]);
+        }
+
+        if (Auth::attempt($request->only(['email', 'password']))) {
+            $request->session()->regenerate();
+
+            return response([
+                'data'    => new UserResource($this->resolveAdminUser($request)),
+                'message' => trans('rest-api::app.admin.account.logged-in-success'),
+            ]);
+        }
+
+        return response([
+            'message' => trans('rest-api::app.admin.account.error.invalid'),
+        ], 401);
+    }
+
 
     /**
      * Logout user.
