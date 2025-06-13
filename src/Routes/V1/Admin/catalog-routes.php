@@ -29,6 +29,8 @@ Route::group([
     Route::controller(ProductController::class)->prefix('products')->group(function () {
         Route::get('', 'allResources');
 
+        Route::post('by-skus', 'allResources');
+
         Route::get('get-count-total', 'getCountTotal');
 
         Route::post('', 'store');
