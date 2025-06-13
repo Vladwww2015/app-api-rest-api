@@ -119,8 +119,9 @@ class ResourceController extends V1Controller implements ResourceContract
     protected function prepareByRepositoryType(Request $request, $repository)
     {
         if($repository instanceof ProductRepository) {
-            if($request->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE)) {
-                $repository->findByReadyToApiStatus($request->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE));
+            $isReadyToApi = $request->get('ready_to_api_flag', IsReadyForApiConstraintInterface::IS_READY_TO_API_VALUE);
+            if($isReadyToApi !== 'skip') {
+                $repository->findByReadyToApiStatus($isReadyToApi);
             }
         }
 
