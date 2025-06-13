@@ -47,7 +47,8 @@ class ResourceController extends V1Controller implements ResourceContract
         'order',
         'token',
         'with_attributes',
-        'response_columns'
+        'response_columns',
+        'ready_to_api_flag'
     ];
 
     /**
@@ -72,6 +73,10 @@ class ResourceController extends V1Controller implements ResourceContract
 
         $query = $this->getRepositoryInstance()->scopeQuery(function ($query) use ($request, $primaryColumn) {
             foreach ($request->except($this->requestException) as $input => $value) {
+                if(is_array($value)) {
+                    $query = $query->whereIn($input, array_map('trim', $value));
+                    continue;
+                }
                 $query = $query->whereIn($input, array_map('trim', explode(',', $value)));
             }
 
